@@ -16,10 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ModeView\" />
-    <Folder Include="Views\Records\" />
     <Folder Include="Views\Reports\" />
-    <Folder Include="Views\Supplier\" />
   </ItemGroup>
 
 </Project>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EwidencjaWSK.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200816125533_i3")]
-    partial class i3
+    [Migration("20200817075513_i1")]
+    partial class i1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,12 @@ namespace EwidencjaWSK.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RecordId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RecordId");
 
                     b.ToTable("AccountDocs");
                 });
@@ -55,7 +60,7 @@ namespace EwidencjaWSK.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RecordId")
+                    b.Property<int>("RecordId")
                         .HasColumnType("int");
 
                     b.HasKey("PartId");
@@ -75,9 +80,6 @@ namespace EwidencjaWSK.Migrations
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("CzyWymaganeZezwolenieMin")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -93,6 +95,9 @@ namespace EwidencjaWSK.Migrations
                     b.Property<bool>("IsInPartsBase")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsNecessaryMinistryPermit")
+                        .HasColumnType("bit");
+
                     b.Property<string>("KindOfTransaction")
                         .HasColumnType("nvarchar(max)");
 
@@ -101,25 +106,18 @@ namespace EwidencjaWSK.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("RecordSupplierId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("RecordId");
-
-                    b.HasIndex("RecordSupplierId");
 
                     b.ToTable("Records");
                 });
 
             modelBuilder.Entity("EwidencjaWSK.Models.Supplier", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
@@ -136,7 +134,7 @@ namespace EwidencjaWSK.Migrations
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SupplierId");
 
                     b.ToTable("Suppliers");
                 });
@@ -154,7 +152,12 @@ namespace EwidencjaWSK.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RecordId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RecordId");
 
                     b.ToTable("WarehouseDocs");
                 });
@@ -359,18 +362,40 @@ namespace EwidencjaWSK.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("EwidencjaWSK.Models.AccountDoc", b =>
+                {
+                    b.HasOne("EwidencjaWSK.Models.Record", "Record")
+                        .WithMany("AccountDocs")
+                        .HasForeignKey("RecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EwidencjaWSK.Models.Part", b =>
                 {
                     b.HasOne("EwidencjaWSK.Models.Record", "Record")
-                        .WithMany()
-                        .HasForeignKey("RecordId");
+                        .WithMany("Parts")
+                        .HasForeignKey("RecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("EwidencjaWSK.Models.Record", b =>
+            modelBuilder.Entity("EwidencjaWSK.Models.Supplier", b =>
                 {
-                    b.HasOne("EwidencjaWSK.Models.Supplier", "RecordSupplier")
-                        .WithMany()
-                        .HasForeignKey("RecordSupplierId");
+                    b.HasOne("EwidencjaWSK.Models.Record", "Record")
+                        .WithOne("RecordSupplier")
+                        .HasForeignKey("EwidencjaWSK.Models.Supplier", "SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EwidencjaWSK.Models.WarehouseDoc", b =>
+                {
+                    b.HasOne("EwidencjaWSK.Models.Record", "Record")
+                        .WithMany("WarehouseDocs")
+                        .HasForeignKey("RecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

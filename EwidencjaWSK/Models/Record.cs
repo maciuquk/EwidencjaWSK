@@ -9,7 +9,12 @@ namespace EwidencjaWSK.Models
 {
     public class Record
     {
-        [Key]
+        public Record()
+        {
+            Parts = new List<Part>();
+            AdditionalDocs = new List<AdditionalDoc>();
+        }
+        
         public int RecordId { get; set; }
 
         [Required]
@@ -17,13 +22,12 @@ namespace EwidencjaWSK.Models
         [Display(Name ="Numer kontraktu")]
         public string Number { get; set; }
 
+        #region record
+
         [Display(Name = "Data")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
-
-        [Display(Name = "Firma")]
-        public virtual Supplier RecordSupplier { get; set; }
 
         [Display(Name = "Wartość")]
         public decimal Value{ get; set; }
@@ -46,50 +50,32 @@ namespace EwidencjaWSK.Models
         [Display(Name = "Czy przedmiot obrotu w bazie części?")]
         public bool IsInPartsBase { get; set; } // numer w bazie danych dostawcy
 
-        [Display(Name = "Czy wymagane jest zewzwolenie ministerstwa?")]
-        public bool CzyWymaganeZezwolenieMin { get; set; } // tak / nie
-    }
+        [Display(Name = "Czy wymagane jest zezwolenie ministerstwa?")]
+        public bool IsNecessaryMinistryPermit{ get; set; } // tak / nie
 
-    public class WarehouseDoc
-    {
-        public int Id { get; set; }
+        #endregion
 
-        [Display(Name = "Numer dokumentu magazynowego")]
-        public string Number { get; set; }
+        [Display(Name = "Firma")]
+        public virtual Supplier Supplier { get; set; }
 
-        [Display(Name = "Data")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
-        [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
-    }
-
-    public class AccountDoc
-    {
-        //wypełnia Ksiegowosc
-        public int Id { get; set; }
-
-        [Display(Name = "Numer dokumentu księgowego")]
-        public string Number { get; set; }
-
-        [Display(Name = "Data")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
-        [DataType(DataType.Date)]
-        public DateTime Date{ get; set; }
-
-        [Display(Name ="Nazwa dokumentu")]
-        public string KindOfDoc { get; set; }
-
+        [Display(Name = "Części")]
+        public virtual ICollection<Part> Parts { get; set; }
+        
+        [Display(Name = "Dokumenty dodatkowe")]
+        public virtual ICollection<AdditionalDoc> AdditionalDocs { get; set; }
+       
     }
 
     public class Supplier
     {
-        public int Id { get; set; }
+        [ForeignKey("Record")]
+        public int SupplierId { get; set; }
 
         [Display(Name = "Nazwa Kontrahenta")]
-        public string Name{ get; set; }
+        public string Name { get; set; }
 
         [Display(Name = "Kod pocztowy")]
-        public string PostalCode{ get; set; }
+        public string PostalCode { get; set; }
 
         [Display(Name = "Ulica")]
         public string Street { get; set; }
@@ -100,11 +86,35 @@ namespace EwidencjaWSK.Models
         [Display(Name = "Państwo")]
         public string Country { get; set; }
 
+        [Display(Name = "Kontrakt")]
+        [ForeignKey("Record")]
+        public int RecordId { get; set; }
+        public virtual Record Record { get; set; }
     }
 
+    public class AdditionalDoc
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Numer dokumentu")]
+        public string Number { get; set; }
+
+        [Display(Name = "Nazwa dokumentu")]
+        public string KindOfDoc { get; set; }
+
+        [Display(Name = "Data")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; }
+
+        [ForeignKey("Record")]
+        public int RecordId { get; set; }
+        public Record Record { get; set; }
+
+    }
+     
     public class Part
     {
-        [ForeignKey("Record")]
         public int PartId { get; set; }
 
         [Display(Name = "Nazwa części")]
@@ -112,12 +122,11 @@ namespace EwidencjaWSK.Models
 
         [Display(Name = "Czy jest uzbrojeniem?")]
         public bool IsInArmedList { get; set; }
-        
-        public virtual Record Record { get; set; }
 
+        [ForeignKey("Record")]
+        public int RecordId { get; set; }
+        public Record Record { get; set; }
     }
-
-
 
     // dodać audyt
 }

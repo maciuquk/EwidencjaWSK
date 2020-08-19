@@ -2,7 +2,7 @@
 
 namespace EwidencjaWSK.Migrations
 {
-    public partial class i3 : Migration
+    public partial class i2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

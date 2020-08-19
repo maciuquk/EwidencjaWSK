@@ -1,0 +1,97 @@
+﻿@model IEnumerable<EwidencjaWSK.Models.Record>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KindOfTransaction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCheckDenyList)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCheckWarningSignalList)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInPartsBase)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsNecessaryMinistryPermit)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KindOfTransaction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCheckDenyList)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCheckWarningSignalList)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsInPartsBase)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WarehouseDocs.Count)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edycja", "EditRecord", new { id=item.RecordId }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
