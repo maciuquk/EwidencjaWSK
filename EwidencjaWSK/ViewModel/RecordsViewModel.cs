@@ -10,8 +10,6 @@ namespace EwidencjaWSK.ViewModel
     {
         public List<Record> Records{ get; set; }
         public List<Supplier> Suppliers{ get; set; }
-        public List<WarehouseDoc> WarehouseDocs{ get; set; }
-        public List<AccountDoc> AccountDocs{ get; set; }
         public List<Part> Parts{ get; set; }
     }
 }

@@ -9,12 +9,11 @@ namespace EwidencjaWSK.Models
 {
     public class Record
     {
-        public Record()
-        {
-            Parts = new List<Part>();
-            AdditionalDocs = new List<AdditionalDoc>();
-        }
-        
+        //public Record()
+        //{
+        //    this.Suppliers= new HashSet<Supplier>();
+        //}
+
         public int RecordId { get; set; }
 
         [Required]
@@ -55,20 +54,20 @@ namespace EwidencjaWSK.Models
 
         #endregion
 
-        [Display(Name = "Firma")]
-        public virtual Supplier Supplier { get; set; }
-
         [Display(Name = "Części")]
-        public virtual ICollection<Part> Parts { get; set; }
-        
+        public ICollection<RecordPart> Parts { get; set; }
+
         [Display(Name = "Dokumenty dodatkowe")]
-        public virtual ICollection<AdditionalDoc> AdditionalDocs { get; set; }
-       
+        public ICollection<RecordAdditionalDoc> AdditionalDocs { get; set; }
+
+        [ForeignKey("Supplier")]
+        public int SuplierId { get; set; }
+        public Supplier Supplier { get; set; }
     }
 
     public class Supplier
     {
-        [ForeignKey("Record")]
+        //[ForeignKey("Record")]
         public int SupplierId { get; set; }
 
         [Display(Name = "Nazwa Kontrahenta")]
@@ -86,15 +85,15 @@ namespace EwidencjaWSK.Models
         [Display(Name = "Państwo")]
         public string Country { get; set; }
 
-        [Display(Name = "Kontrakt")]
-        [ForeignKey("Record")]
-        public int RecordId { get; set; }
-        public virtual Record Record { get; set; }
+        [Display(Name ="Kontrakt")]
+        public ICollection<Record> Records { get; set; }
+
+
     }
 
     public class AdditionalDoc
     {
-        public int Id { get; set; }
+        public int AdditionalDocId { get; set; }
 
         [Display(Name = "Numer dokumentu")]
         public string Number { get; set; }
@@ -107,9 +106,11 @@ namespace EwidencjaWSK.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [ForeignKey("Record")]
-        public int RecordId { get; set; }
-        public Record Record { get; set; }
+        [Display(Name = "Kontrakt")]
+        //[ForeignKey("Record")]
+        //public int RecordId { get; set; }
+        //public Record Record { get; set; }
+        public ICollection<RecordAdditionalDoc> Records { get; set; }
 
     }
      
@@ -123,9 +124,27 @@ namespace EwidencjaWSK.Models
         [Display(Name = "Czy jest uzbrojeniem?")]
         public bool IsInArmedList { get; set; }
 
-        [ForeignKey("Record")]
+        //[Display(Name = "Kontrakt")]
+        //[ForeignKey("Record")]
+        //public int RecordId { get; set; }
+        public  ICollection<RecordPart> Records { get; set; }
+    }
+
+    public class RecordPart
+    {
         public int RecordId { get; set; }
         public Record Record { get; set; }
+        public int PartId { get; set; }
+        public Part Part { get; set; }
+
+    }
+
+    public class RecordAdditionalDoc
+    {
+        public int RecordId { get; set; }
+        public Record Record { get; set; }
+        public int AdditionalDocId { get; set; }
+        public AdditionalDoc AdditionalDoc{ get; set; }
     }
 
     // dodać audyt
