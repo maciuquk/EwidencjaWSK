@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
 using Microsoft.AspNetCore.Routing;
+using EwidencjaWSK.ViewModel;
 
 namespace EwidencjaWSK.Controllers
 {
@@ -23,16 +24,26 @@ namespace EwidencjaWSK.Controllers
         // GET: Records
         public async Task<IActionResult> Index(int Year = 0)
         {
+            var applicationDbContext = new List<Record>();
+
             if (Year == 0)
             {
-                var applicationDbContext = _context.Records.Include(r => r.Supplier);
-                return View(await applicationDbContext.ToListAsync());
+                applicationDbContext = await _context.Records.Include(r => r.Supplier).ToListAsync();
+                
             }
             else
             {
-                var RecordsInYear = _context.Records.Where(n => n.Date.Year == Year).ToListAsync();
-                return View(await RecordsInYear);
+                applicationDbContext = await _context.Records.Where(n => n.Date.Year == Year).ToListAsync();
+                
             }
+
+            var recordsViewModel = new RecordsViewModel();
+            recordsViewModel.Records = applicationDbContext;
+            recordsViewModel.Suppliers = await (from supplier in _context.Suppliers
+                                          select supplier).ToListAsync();
+
+            return View(applicationDbContext);
+
         }
 
         // GET: Records/Details/5

@@ -11,5 +11,9 @@ namespace EwidencjaWSK.ViewModel
         public List<Record> Records{ get; set; }
         public List<Supplier> Suppliers{ get; set; }
         public List<Part> Parts{ get; set; }
+        public List<AdditionalDoc> AdditionalDocs { get; set; }
+        public int Year { get; set; }
+
+
     }
 }
