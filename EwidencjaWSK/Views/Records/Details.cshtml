@@ -1,4 +1,5 @@
-﻿@model EwidencjaWSK.Models.Record
+﻿@*@model EwidencjaWSK.Models.Record*@
+@model EwidencjaWSK.ViewModel.RecordViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,74 +12,80 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Number)
+            @Html.DisplayNameFor(model => model.Record.Number)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Number)
+            @Html.DisplayFor(model => model.Record.Number)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.Record.Date)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
+            @Html.DisplayFor(model => model.Record.Date)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Value)
+            @Html.DisplayNameFor(model => model.Record.Value)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Value)
+            @Html.DisplayFor(model => model.Record.Value)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Currency)
+            @Html.DisplayNameFor(model => model.Record.Currency)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Currency)
+            @Html.DisplayFor(model => model.Record.Currency)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Record.Description)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Record.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KindOfTransaction)
+            @Html.DisplayNameFor(model => model.Record.KindOfTransaction)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KindOfTransaction)
+            @Html.DisplayFor(model => model.Record.KindOfTransaction)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsCheckDenyList)
+            @Html.DisplayNameFor(model => model.Record.IsCheckDenyList)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsCheckDenyList)
+            @Html.DisplayFor(model => model.Record.IsCheckDenyList)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsCheckWarningSignalList)
+            @Html.DisplayNameFor(model => model.Record.IsCheckWarningSignalList)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsCheckWarningSignalList)
+            @Html.DisplayFor(model => model.Record.IsCheckWarningSignalList)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsInPartsBase)
+            @Html.DisplayNameFor(model => model.Record.IsInPartsBase)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsInPartsBase)
+            @Html.DisplayFor(model => model.Record.IsInPartsBase)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsNecessaryMinistryPermit)
+            @Html.DisplayNameFor(model => model.Record.IsNecessaryMinistryPermit)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsNecessaryMinistryPermit)
+            @Html.DisplayFor(model => model.Record.IsNecessaryMinistryPermit)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Supplier)
+            @Html.DisplayNameFor(model => model.Record.Supplier)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Supplier.SupplierId)
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Record.Supplier.SupplierId)*@
+            @{
+                var supplierName = (from supplier in Model.Suppliers
+                                    where supplier.SupplierId == Model.Record.SuplierId
+                                    select supplier.Name).First().ToString();
+                @Html.Raw(supplierName);
+            }
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.RecordId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Record.RecordId">Edycja</a> |
     <a asp-action="Index">Back to List</a>
 </div>

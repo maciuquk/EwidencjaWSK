@@ -21,7 +21,6 @@ namespace EwidencjaWSK.Controllers
             _context = context;
         }
 
-        // GET: Records
         public async Task<IActionResult> Index(int Year = 0)
         {
 
@@ -49,7 +48,6 @@ namespace EwidencjaWSK.Controllers
 
         }
 
-        // GET: Records/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -65,21 +63,19 @@ namespace EwidencjaWSK.Controllers
                 return NotFound();
             }
 
-
-
-            return View(record);
+            var recordViewModel = new RecordViewModel();
+            recordViewModel.Suppliers = await (from supplier in _context.Suppliers
+                                                select supplier).ToListAsync();
+            recordViewModel.Record = record;
+            return View(recordViewModel);
         }
 
-        // GET: Records/Create
         public IActionResult Create()
         {
             ViewData["SuplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Name");
             return View();
         }
 
-        // POST: Records/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecordId,Number,Date,Value,Currency,Description,KindOfTransaction,IsCheckDenyList,IsCheckWarningSignalList,IsInPartsBase,IsNecessaryMinistryPermit,SuplierId")] Record record)
@@ -94,7 +90,6 @@ namespace EwidencjaWSK.Controllers
             return View(record);
         }
 
-        // GET: Records/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -111,9 +106,6 @@ namespace EwidencjaWSK.Controllers
             return View(record);
         }
 
-        // POST: Records/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("RecordId,Number,Date,Value,Currency,Description,KindOfTransaction,IsCheckDenyList,IsCheckWarningSignalList,IsInPartsBase,IsNecessaryMinistryPermit,SuplierId")] Record record)
@@ -147,7 +139,6 @@ namespace EwidencjaWSK.Controllers
             return View(record);
         }
 
-        // GET: Records/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -166,7 +157,6 @@ namespace EwidencjaWSK.Controllers
             return View(record);
         }
 
-        // POST: Records/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
