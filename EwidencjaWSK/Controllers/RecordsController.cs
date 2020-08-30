@@ -102,8 +102,14 @@ namespace EwidencjaWSK.Controllers
             {
                 return NotFound();
             }
-            ViewData["SuplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId", record.SuplierId);
-            return View(record);
+
+            var recordViewModel = new RecordViewModel();
+            recordViewModel.Suppliers = await (from supplier in _context.Suppliers
+                                               select supplier).ToListAsync();
+            recordViewModel.Record = record;
+
+            ViewData["SuplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Name", record.SuplierId);
+            return View(recordViewModel);
         }
 
         [HttpPost]
