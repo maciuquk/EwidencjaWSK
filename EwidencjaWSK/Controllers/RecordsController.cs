@@ -24,6 +24,8 @@ namespace EwidencjaWSK.Controllers
         // GET: Records
         public async Task<IActionResult> Index(int Year = 0)
         {
+
+
             var applicationDbContext = new List<Record>();
 
             if (Year == 0)
@@ -42,7 +44,8 @@ namespace EwidencjaWSK.Controllers
             recordsViewModel.Suppliers = await (from supplier in _context.Suppliers
                                           select supplier).ToListAsync();
 
-            return View(applicationDbContext);
+            return View(recordsViewModel);
+            //return View(applicationDbContext);
 
         }
 
@@ -61,6 +64,8 @@ namespace EwidencjaWSK.Controllers
             {
                 return NotFound();
             }
+
+
 
             return View(record);
         }

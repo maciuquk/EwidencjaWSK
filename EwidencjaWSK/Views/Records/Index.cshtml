@@ -1,4 +1,5 @@
-﻿@model IEnumerable<EwidencjaWSK.Models.Record>
+﻿@*@model IEnumerable<EwidencjaWSK.Models.Record>*@
+@model EwidencjaWSK.ViewModel.RecordsViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,37 +14,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Number)
+                @Html.DisplayNameFor(model => model.Records.FirstOrDefault().Number)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(model => model.Records.FirstOrDefault().Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Value)
+                @Html.DisplayNameFor(model => model.Records.FirstOrDefault().Value)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Currency)
+                @Html.DisplayNameFor(model => model.Records.FirstOrDefault().Currency)
             </th>
             @*<th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KindOfTransaction)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsCheckDenyList)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsCheckWarningSignalList)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsInPartsBase)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsNecessaryMinistryPermit)
+                </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.KindOfTransaction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsCheckDenyList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsCheckWarningSignalList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsInPartsBase)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsNecessaryMinistryPermit)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Supplier)
+                @Html.DisplayNameFor(model => model.Records.FirstOrDefault().Supplier)
             </th>
             <th></th>
         </tr>
@@ -53,47 +54,47 @@
 
         <tr>
             <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
             </td>
             <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
             </td>
             <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
             </td>
             <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
             </td>
             <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
             </td>
             @*<td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>*@
-           
-            
+                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                </td>
+                <td>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                </td>
+                <td>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                </td>
+                <td>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                </td>
+                <td>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                </td>
+                <td>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                </td>
+                <td>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+                </td>*@
+
+
         </tr>
 
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Records)
         {
             <tr>
                 <td>
@@ -109,26 +110,32 @@
                     @Html.DisplayFor(modelItem => item.Currency)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.KindOfTransaction)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsCheckDenyList)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsCheckWarningSignalList)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsInPartsBase)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsNecessaryMinistryPermit)
-                </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Supplier.SupplierId)
-                </td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KindOfTransaction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsCheckDenyList)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsCheckWarningSignalList)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsInPartsBase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsNecessaryMinistryPermit)
+                    </td>*@
+            <td>
+                @{
+                    var supplierName = (from supplier in Model.Suppliers
+                                        where supplier.SupplierId == item.Supplier.SupplierId
+                                        select supplier.Name).First().ToString();
+                    @Html.Raw(supplierName);
+                }
+
+            </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.RecordId">Edycja</a> |
                     <a asp-action="Details" asp-route-id="@item.RecordId">Szczegóły</a> |
