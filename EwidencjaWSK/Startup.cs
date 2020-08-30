@@ -64,7 +64,7 @@ namespace EwidencjaWSK
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Records}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

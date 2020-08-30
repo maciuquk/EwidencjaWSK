@@ -1,0 +1,84 @@
+﻿@model EwidencjaWSK.Models.Record
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Record</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Currency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.KindOfTransaction)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.KindOfTransaction)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsCheckDenyList)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsCheckDenyList)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsCheckWarningSignalList)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsCheckWarningSignalList)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsInPartsBase)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsInPartsBase)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsNecessaryMinistryPermit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsNecessaryMinistryPermit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Supplier)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Supplier.SupplierId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RecordId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

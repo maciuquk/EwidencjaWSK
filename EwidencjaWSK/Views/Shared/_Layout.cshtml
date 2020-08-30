@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+﻿    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EwidencjaWSK</title>
+    <title>Ewidencja WSK</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -11,27 +11,76 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EwidencjaWSK</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ewidencja WSK</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="Index">Wszystkie kontrakty</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="AddRecord">Dodaj kontrakt</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Wszyscy dostawcy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Supplier" asp-action="AddSupplier">Dodaj dostawcę</a>
-                        </li>
-                    </ul>
+
+                    <div class="navbar-nav flex-grow-1">
+
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Kontrakty
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="Index">Wszystkie kontrakty</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="Create">Dodaj kontrakt</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="ThisYearRecords">Kontrakty z bieżącego roku</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="LastYearRecords">Kontrakty z poprzedniego roku</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dostawcy
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Suppliers" asp-action="Index">Wszyscy dostawcy</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Suppliers" asp-action="Create">Dodaj dostawcę</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dokumenty
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AdditionalDocs" asp-action="Index">Wszystkie dokumenty</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AdditionalDocs" asp-action="Create">Dodaj dokument</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Baza części
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Index">Wszystkie części</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Create">Dodaj część</a>
+                            </div>
+                    </div>
+
+                        @*<ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="Index">Wszystkie kontrakty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Records" asp-action="AddRecord">Dodaj kontrakt</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Suppliers" asp-action="Index">Wszyscy dostawcy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Suppliers" asp-action="Create">Dodaj dostawcę</a>
+                </li>
+            </ul>*@
                 </div>
             </div>
         </nav>

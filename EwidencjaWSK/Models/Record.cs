@@ -60,8 +60,11 @@ namespace EwidencjaWSK.Models
         [Display(Name = "Dokumenty dodatkowe")]
         public ICollection<RecordAdditionalDoc> AdditionalDocs { get; set; }
 
+        
         [ForeignKey("Supplier")]
         public int SuplierId { get; set; }
+        
+        [Display(Name = "Dostawca")]
         public Supplier Supplier { get; set; }
     }
 

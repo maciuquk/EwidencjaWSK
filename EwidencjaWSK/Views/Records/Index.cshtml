@@ -1,0 +1,140 @@
+﻿@model IEnumerable<EwidencjaWSK.Models.Record>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Wszystkie kontrakty</h1>
+
+<p>
+    <a asp-action="Create">Dodaj nowy kontrakt</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Currency)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KindOfTransaction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCheckDenyList)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCheckWarningSignalList)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInPartsBase)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsNecessaryMinistryPermit)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        <tr>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            @*<td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>
+            <td>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
+            </td>*@
+           
+            
+        </tr>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Currency)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KindOfTransaction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCheckDenyList)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCheckWarningSignalList)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsInPartsBase)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsNecessaryMinistryPermit)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.SupplierId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.RecordId">Edycja</a> |
+                    <a asp-action="Details" asp-route-id="@item.RecordId">Szczegóły</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RecordId">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
