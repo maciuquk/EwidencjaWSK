@@ -5,10 +5,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Szczegóły kontraktu</h1>
 
 <div>
-    <h4>Record</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -83,9 +82,95 @@
                 @Html.Raw(supplierName);
             }
         </dd>
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.AdditionalDocs)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Record.Supplier.SupplierId)*@
+
+
+            @if (Model.AdditionalDocs.Any())
+            {
+                <table border="1" style="margin-bottom: 5px">
+                    <thead>
+                        <tr>
+                            <th>Lp</th>
+                            <th>Nr dokumentu</th>
+                            <th>Nazwa dokumentu</th>
+                            <th>Data</th>
+
+                        </tr>
+                    </thead>
+
+                    @{
+                        int no = 1;
+                        foreach (var item in Model.AdditionalDocs)
+                        {
+
+
+                            <tr>
+                                <td>@Html.Raw(no.ToString())</td>
+                                <td>@Html.Raw(item.Number)</td>
+                                <td>@Html.Raw(item.KindOfDoc)</td>
+                                <td>@Html.Raw(item.Date.Day + "." + item.Date.Month + "." + item.Date.Year)</td>
+                            </tr>
+
+                            no++;
+                        }
+
+                    }
+                </table>
+            }
+            <a class="btn btn-secondary btn-sm" asp-area="" asp-controller="AdditionalDocs" asp-action="Create">Dodaj dokument</a>
+
+        </dd>
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Parts)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Record.Supplier.SupplierId)*@
+
+
+            @if (Model.Parts.Any())
+            {
+                <table border="1" style="margin-bottom: 5px">
+                    <thead>
+                        <tr>
+                            <th>Lp</th>
+                            <th>Nazwa</th>
+                            <th>Czy jest na liście uzbrojenia</th>
+
+                        </tr>
+                    </thead>
+
+                    @{
+                        int no = 1;
+                        foreach (var item in Model.Parts)
+                        {
+
+
+                            <tr>
+                                <td>@Html.Raw(no.ToString())</td>
+                                <td>@Html.Raw(item.Name)</td>
+                                <td>@Html.Raw(item.IsInArmedList.ToString())</td>
+                            </tr>
+
+                            no++;
+                        }
+
+                    }
+                </table>
+            }
+        <a class="btn btn-secondary btn-sm" asp-area="" asp-controller="Parts" asp-action="Create">Dodaj część</a>
+
+        </dd>
     </dl>
+
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Record.RecordId">Edycja</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wszystkie kontrakty</a>
 </div>

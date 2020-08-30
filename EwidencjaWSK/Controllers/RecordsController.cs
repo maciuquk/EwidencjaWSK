@@ -30,18 +30,18 @@ namespace EwidencjaWSK.Controllers
             if (Year == 0)
             {
                 applicationDbContext = await _context.Records.Include(r => r.Supplier).ToListAsync();
-                
+
             }
             else
             {
                 applicationDbContext = await _context.Records.Where(n => n.Date.Year == Year).ToListAsync();
-                
+
             }
 
             var recordsViewModel = new RecordsViewModel();
             recordsViewModel.Records = applicationDbContext;
             recordsViewModel.Suppliers = await (from supplier in _context.Suppliers
-                                          select supplier).ToListAsync();
+                                                select supplier).ToListAsync();
 
             return View(recordsViewModel);
             //return View(applicationDbContext);
@@ -65,8 +65,38 @@ namespace EwidencjaWSK.Controllers
 
             var recordViewModel = new RecordViewModel();
             recordViewModel.Suppliers = await (from supplier in _context.Suppliers
-                                                select supplier).ToListAsync();
+                                               select supplier).ToListAsync();
             recordViewModel.Record = record;
+
+            var docs = new List<AdditionalDoc>();
+            foreach (var item in _context.AdditionalDocs)
+            {
+                foreach (var item2 in _context.RecordsAdditionalDocs)
+                {
+                    if ((item.AdditionalDocId == item2.AdditionalDocId) && (item2.RecordId == record.RecordId))
+                    {
+                        docs.Add(item);
+                    }
+                }
+            }
+            recordViewModel.AdditionalDocs = docs;
+            
+            var parts = new List<Part>();
+            foreach (var item in _context.Parts)
+            {
+                foreach (var item2 in _context.RecordsParts)
+                {
+                    if ((item.PartId == item2.PartId) && (item2.RecordId == record.RecordId))
+                    {
+                        parts.Add(item);
+                    }
+                }
+            }
+            recordViewModel.Parts = parts;
+
+
+
+
             return View(recordViewModel);
         }
 
@@ -188,7 +218,7 @@ namespace EwidencjaWSK.Controllers
 
             return RedirectToAction("Index", routeValues);
         }
-        
+
         public async Task<IActionResult> LastYearRecords()
         {
             int lastYear = DateTime.Now.Year - 1;
