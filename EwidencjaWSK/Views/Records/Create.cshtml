@@ -4,9 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Dodawanie nowego kontraktu</h1>
 
-<h4>Record</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -63,18 +62,18 @@
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="SuplierId" class="control-label"></label>
+                <label asp-for="SuplierId" class="control-label">Dostawca</label>
                 <select asp-for="SuplierId" class ="form-control" asp-items="ViewBag.SuplierId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Dodaj kontrakt" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do wszystkich kontraktów</a>
 </div>
 
 @section Scripts {

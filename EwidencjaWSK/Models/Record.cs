@@ -71,6 +71,7 @@ namespace EwidencjaWSK.Models
     public class Supplier
     {
         //[ForeignKey("Record")]
+
         public int SupplierId { get; set; }
 
         [Display(Name = "Nazwa Kontrahenta")]

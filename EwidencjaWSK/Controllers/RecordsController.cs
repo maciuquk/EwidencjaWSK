@@ -73,7 +73,7 @@ namespace EwidencjaWSK.Controllers
         // GET: Records/Create
         public IActionResult Create()
         {
-            ViewData["SuplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId");
+            ViewData["SuplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Name");
             return View();
         }
 
