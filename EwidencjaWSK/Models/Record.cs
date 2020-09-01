@@ -136,8 +136,11 @@ namespace EwidencjaWSK.Models
 
     public class RecordPart
     {
+        [Display(Name ="Kontrakt numer")]
         public int RecordId { get; set; }
         public Record Record { get; set; }
+       
+        //[Display(Name ="Nazwa części")]
         public int PartId { get; set; }
         public Part Part { get; set; }
 

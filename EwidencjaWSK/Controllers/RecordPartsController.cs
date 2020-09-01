@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
+using EwidencjaWSK.ViewModel;
+using Microsoft.AspNetCore.Routing;
 
 namespace EwidencjaWSK.Controllers
 {
@@ -47,11 +49,47 @@ namespace EwidencjaWSK.Controllers
         }
 
         // GET: RecordParts/Create
-        public IActionResult Create()
+        public IActionResult Create(int id = 0)
         {
-            ViewData["PartId"] = new SelectList(_context.Parts, "PartId", "PartId");
-            ViewData["RecordId"] = new SelectList(_context.Records, "RecordId", "Number");
-            return View();
+
+            //ViewData["PartId"] = new SelectList(_context.Parts, "PartId", "Name");
+            //ViewData["RecordNumber"] = _context.Records.Where(n => n.RecordId == id).Select(n => n.Number).SingleOrDefault();
+
+            var recordPartsViewModel = new RecordPartsViewModel();
+            recordPartsViewModel.Record = _context.Records.Where(n => n.RecordId == id).SingleOrDefault();
+            recordPartsViewModel.Parts = new List<Part>();
+
+            foreach (var part in _context.Parts)
+            {
+                bool isExist = false;
+
+                foreach (var recordPart in _context.RecordsParts)
+                {
+                    if ((recordPart.RecordId == recordPartsViewModel.Record.RecordId) && (recordPart.PartId == part.PartId))
+                    {
+                        isExist = true;
+                        continue;
+
+                    }
+                }
+                if (!isExist)
+                {
+                    recordPartsViewModel.Parts.Add(part);
+                    isExist = false;
+                }
+            }
+
+            if (recordPartsViewModel.Parts.Count() == 0)
+            {
+                var routeValues = new RouteValueDictionary
+                {
+                    { "id", id }
+                };
+                return RedirectToAction("Details", "Records", routeValues);
+            }
+
+
+            return View(recordPartsViewModel);
         }
 
         // POST: RecordParts/Create
@@ -59,17 +97,27 @@ namespace EwidencjaWSK.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecordId,PartId")] RecordPart recordPart)
+        public async Task<IActionResult> Create(int RecordId, int PartId)
         {
+            var recordPart = new RecordPart();
+            recordPart.RecordId = RecordId;
+            recordPart.PartId = PartId;
+            var routeValues = new RouteValueDictionary
+                {
+                    { "id", RecordId }
+                };
+
+
             if (ModelState.IsValid)
             {
                 _context.Add(recordPart);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                
+                return RedirectToAction("Details", "Records", routeValues);
             }
-            ViewData["PartId"] = new SelectList(_context.Parts, "PartId", "PartId", recordPart.PartId);
-            ViewData["RecordId"] = new SelectList(_context.Records, "RecordId", "Number", recordPart.RecordId);
-            return View(recordPart);
+
+            return RedirectToAction("Details", "Records", routeValues);
         }
 
         // GET: RecordParts/Edit/5
@@ -128,34 +176,50 @@ namespace EwidencjaWSK.Controllers
         }
 
         // GET: RecordParts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? RecordId, int? PartId)
+        //{
+        //    if (RecordId == null || PartId == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var recordPart = await _context.RecordsParts
-                .Include(r => r.Part)
-                .Include(r => r.Record)
-                .FirstOrDefaultAsync(m => m.RecordId == id);
-            if (recordPart == null)
-            {
-                return NotFound();
-            }
 
-            return View(recordPart);
-        }
+        //    var recordPart = await _context.RecordsParts
+        //        .Include(r => r.Part)
+        //        .Include(r => r.Record)
+        //        .FirstOrDefaultAsync(m => m.RecordId == id);
+        //    if (recordPart == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(recordPart);
+        //}
 
         // POST: RecordParts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int RecordId, int PartId)
         {
-            var recordPart = await _context.RecordsParts.FindAsync(id);
-            _context.RecordsParts.Remove(recordPart);
+            foreach (var recordPart in _context.RecordsParts)
+            {
+                if((recordPart.RecordId == RecordId) && (recordPart.PartId == PartId))
+                {
+                    _context.RecordsParts.Remove(recordPart);
+                }
+            }
+            
+
+            //var recordPart = await _context.RecordsParts.FindAsync(id);
+            
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            var routeValues = new RouteValueDictionary
+            {
+                {"id", RecordId }
+            };
+
+            return RedirectToAction("Details","Records", routeValues);
         }
 
         private bool RecordPartExists(int id)

@@ -149,5 +149,16 @@ namespace EwidencjaWSK.Controllers
         {
             return _context.Parts.Any(e => e.PartId == id);
         }
+
+        //public async Task<IActionResult> DeleteAdditionalDoc(int id)
+        //{
+        //    return RedirectToAction()
+        //}
+        
+        //public async Task<IActionResult> DeletePart(int id)
+        //{
+
+        //}
+
     }
 }
