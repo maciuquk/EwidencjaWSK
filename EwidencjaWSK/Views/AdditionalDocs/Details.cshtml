@@ -1,13 +1,12 @@
 ﻿@model EwidencjaWSK.Models.AdditionalDoc
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły dokumentu";
 }
 
-<h1>Details</h1>
+    <h1>Szczegóły dokumentu</h1>
 
 <div>
-    <h4>AdditionalDoc</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -31,6 +30,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.AdditionalDocId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.AdditionalDocId">Edycja</a> |
+    <a asp-action="Index">Powrót do listy dokumentów</a>
 </div>

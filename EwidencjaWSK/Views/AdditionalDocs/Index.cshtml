@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<EwidencjaWSK.Models.AdditionalDoc>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Wszystkie dokumenty";
 }
 
-<h1>Index</h1>
+<h1>Wszystkie dokumenty</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Dodaj nowy</a>
 </p>
 <table class="table">
     <thead>
@@ -37,9 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.AdditionalDocId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AdditionalDocId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AdditionalDocId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.AdditionalDocId">Edycja</a> |
+                <a asp-action="Details" asp-route-id="@item.AdditionalDocId">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.AdditionalDocId">Usuń</a>
             </td>
         </tr>
 }
