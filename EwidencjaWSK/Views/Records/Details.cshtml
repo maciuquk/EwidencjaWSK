@@ -155,7 +155,17 @@
                                         <tr>
                                             <td>@Html.Raw(no.ToString())</td>
                                             <td>@Html.Raw(item.Name)</td>
-                                            <td>@Html.Raw(item.IsInArmedList.ToString())</td>
+                                            <td>
+                                                @{
+                                                    if (item.IsInArmedList)
+                                                    {
+                                                        @Html.Raw("Tak");
+                                                    }
+                                                    else
+                                                        @Html.Raw("Nie");
+                                                }
+
+                                            </td>
                                             @*<td><a class="btn btn-outline-primary btn-sm" >Usuń</a></td>*@
                                             <td>
                                                 <form asp-controller="RecordParts" asp-action="Delete" method="post">
