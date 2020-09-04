@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
+using EwidencjaWSK.ViewModel;
 
 namespace EwidencjaWSK.Controllers
 {
@@ -20,9 +21,26 @@ namespace EwidencjaWSK.Controllers
         }
 
         // GET: Suppliers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Suppliers.ToListAsync());
+            int pageSize = 7;
+
+            var supplierViewModel = new SupplierViewModel();
+            var applicationDbContext = (await _context.Suppliers.ToListAsync());
+
+            supplierViewModel.Suppliers= (applicationDbContext
+                .OrderBy(p => p.SupplierId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)).ToList();
+
+            supplierViewModel.PaginationViewModel = new PaginationViewModel
+            {
+                CurrentPage = page,
+                ItemsPerPage = pageSize,
+                TotalItems = applicationDbContext.Count()
+            };
+
+            return View(supplierViewModel);
         }
 
         // GET: Suppliers/Details/5
