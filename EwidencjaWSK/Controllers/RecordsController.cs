@@ -21,10 +21,11 @@ namespace EwidencjaWSK.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int Year = 0)
+        public async Task<IActionResult> Index(int page = 1)
         {
+            int PageSize = 7;
 
-
+            int Year = 0;
             var applicationDbContext = new List<Record>();
 
             if (Year == 0)
@@ -42,6 +43,19 @@ namespace EwidencjaWSK.Controllers
             recordsViewModel.Records = applicationDbContext;
             recordsViewModel.Suppliers = await (from supplier in _context.Suppliers
                                                 select supplier).ToListAsync();
+
+            
+            recordsViewModel.Records = (applicationDbContext
+                .OrderBy(p => p.RecordId)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)).ToList();
+
+            recordsViewModel.PaginationViewModel = new PaginationViewModel
+            {
+                CurrentPage = page,
+                ItemsPerPage = PageSize,
+                TotalItems = applicationDbContext.Count()
+            };
 
             return View(recordsViewModel);
             //return View(applicationDbContext);

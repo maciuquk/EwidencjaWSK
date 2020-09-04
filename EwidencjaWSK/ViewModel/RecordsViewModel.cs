@@ -13,6 +13,7 @@ namespace EwidencjaWSK.ViewModel
         public List<Part> Parts{ get; set; }
         public List<AdditionalDoc> AdditionalDocs { get; set; }
         public int Year { get; set; }
+        public PaginationViewModel PaginationViewModel { get; set; }
 
 
     }
