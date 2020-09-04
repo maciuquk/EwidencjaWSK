@@ -23,7 +23,7 @@ namespace EwidencjaWSK.Controllers
 
         public async Task<IActionResult> Index(int page = 1)
         {
-            int PageSize = 7;
+            int pageSize = 7;
 
             int Year = 0;
             var applicationDbContext = new List<Record>();
@@ -47,13 +47,13 @@ namespace EwidencjaWSK.Controllers
             
             recordsViewModel.Records = (applicationDbContext
                 .OrderBy(p => p.RecordId)
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize)).ToList();
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)).ToList();
 
             recordsViewModel.PaginationViewModel = new PaginationViewModel
             {
                 CurrentPage = page,
-                ItemsPerPage = PageSize,
+                ItemsPerPage = pageSize,
                 TotalItems = applicationDbContext.Count()
             };
 
