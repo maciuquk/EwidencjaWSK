@@ -23,7 +23,7 @@ namespace EwidencjaWSK.Controllers
         // GET: Parts
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 7;
+            int pageSize = 12;
 
             var partViewModel = new PartViewModel();
             var applicationDbContext = (await _context.Parts.ToListAsync());

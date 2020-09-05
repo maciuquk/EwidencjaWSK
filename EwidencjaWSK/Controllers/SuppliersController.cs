@@ -23,7 +23,7 @@ namespace EwidencjaWSK.Controllers
         // GET: Suppliers
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 7;
+            int pageSize = 12;
 
             var supplierViewModel = new SupplierViewModel();
             var applicationDbContext = (await _context.Suppliers.ToListAsync());

@@ -9,7 +9,7 @@ namespace EwidencjaWSK.Data
 {
     //public class ApplicationDbContext : IdentityDbContext
     // odkomentować powyżej aby identity ruszyło
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,6 +20,7 @@ namespace EwidencjaWSK.Data
         {
             modelbuilder.Entity<RecordPart>().HasKey(sc => new { sc.RecordId, sc.PartId });
             modelbuilder.Entity<RecordAdditionalDoc>().HasKey(sc => new { sc.RecordId, sc.AdditionalDocId });
+            base.OnModelCreating(modelbuilder);
         }
 
         public DbSet<Record> Records { get; set; }

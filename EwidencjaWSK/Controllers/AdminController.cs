@@ -23,7 +23,7 @@ namespace EwidencjaWSK.Controllers
 
         public IActionResult ZasiejBaze()
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 1; i < 100; i++)
             {
                 var newRecord = new Record();
                 var newPart = new Part();
@@ -36,25 +36,28 @@ namespace EwidencjaWSK.Controllers
                 newSupplier.Street = "Ulica";
                 newSupplier.Number = "1";
                 newSupplier.Country = "Niemcy";
+                newSupplier.Name = "Dostawca" + rnd.Next(1000).ToString();
+                _context.Suppliers.Add(newSupplier);
+                _context.SaveChanges();
 
                 newRecord.Number = "Kontrakt nr. " + rnd.Next(1000).ToString();
                 newRecord.Date = new DateTime(2020,2,4);
                 newRecord.Value = 1000;
-                newRecord.SuplierId = 3;
+                newRecord.SuplierId = 4;
+                _context.Records.Add(newRecord);
+                _context.SaveChanges();
 
                 newAdditionalDoc.Number = "Dokument nr" + rnd.Next(1000).ToString();
                 newAdditionalDoc.KindOfDoc = "WZ";
-
-                newSupplier.Name = "Dostawca" + rnd.Next(1000).ToString();
+                _context.AdditionalDocs.Add(newAdditionalDoc);
+                _context.SaveChanges();
 
                 newPart.Name = "Część" + rnd.Next(1000).ToString();
-
-                _context.Suppliers.Add(newSupplier);
                 _context.Parts.Add(newPart);
-                _context.Records.Add(newRecord);
-                _context.AdditionalDocs.Add(newAdditionalDoc);
-
                 _context.SaveChanges();
+
+
+
             }
 
 

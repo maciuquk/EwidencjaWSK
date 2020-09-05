@@ -9,9 +9,11 @@ using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
 using Microsoft.AspNetCore.Routing;
 using EwidencjaWSK.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EwidencjaWSK.Controllers
 {
+    [Authorize]
     public class RecordsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +25,7 @@ namespace EwidencjaWSK.Controllers
 
         public async Task<IActionResult> Index(int page = 1, string search = "", int Year = 0)
         {
-            int pageSize = 7;
+            int pageSize = 11;
             var applicationDbContext = new List<Record>();
 
             if (String.IsNullOrEmpty(search))
@@ -45,7 +47,7 @@ namespace EwidencjaWSK.Controllers
                 
                 foreach (var item in _context.Records)
                 {
-                    if (item.Number.Contains(search) || item.Description.Contains(search))
+                    if (item.Number.Contains(search))
                     {
                         applicationDbContext.Add(item);
                     }

@@ -2,41 +2,43 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
-    </li>
+    <ul class="navbar-nav">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Witaj @User.Identity.Name!</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Wyloguj</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
+            </li>
 
-    <li class="nav-item">
-        <div class="dropdown show">
-            <a class="btn btn-danger dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Admin
-            </a>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Index">Lista zmian</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Create">Użytkownicy</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ZasiejBaze">Zasiej bazę</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UsunBaze">Usuń bazę</a>
+        }
+
+        <li class="nav-item">
+            <div class="dropdown show">
+                <a class="btn btn-default dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Index">Lista zmian</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Create">Użytkownicy</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ZasiejBaze">Zasiej bazę</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UsunBaze">Usuń bazę</a>
+                </div>
+
             </div>
-
-        </div>
-    </li>
-}
-</ul>
+        </li>
+    </ul>

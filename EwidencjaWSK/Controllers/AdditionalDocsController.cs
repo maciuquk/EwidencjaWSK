@@ -23,7 +23,7 @@ namespace EwidencjaWSK.Controllers
         // GET: AdditionalDocs
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 7;
+            int pageSize = 12;
             var additionalDocsViewModel = new AdditionalDocsViewModel();
             var applicationDbContext = (await _context.AdditionalDocs.ToListAsync());
 
