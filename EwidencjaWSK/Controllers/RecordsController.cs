@@ -21,23 +21,43 @@ namespace EwidencjaWSK.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string search = "", int Year = 0)
         {
             int pageSize = 7;
-
-            int Year = 0;
             var applicationDbContext = new List<Record>();
 
-            if (Year == 0)
+            if (String.IsNullOrEmpty(search))
             {
-                applicationDbContext = await _context.Records.Include(r => r.Supplier).ToListAsync();
+                if (Year == 0)
+                {
+                    applicationDbContext = await _context.Records.Include(r => r.Supplier).ToListAsync();
 
+                }
+                else
+                {
+                    applicationDbContext = await _context.Records.Where(n => n.Date.Year == Year).ToListAsync();
+
+                }
             }
-            else
+
+            else // jak jest parametr do wyszukiwania
             {
-                applicationDbContext = await _context.Records.Where(n => n.Date.Year == Year).ToListAsync();
+                
+                foreach (var item in _context.Records)
+                {
+                    if (item.Number.Contains(search) || item.Description.Contains(search))
+                    {
+                        applicationDbContext.Add(item);
+                    }
+                }
 
+                if (applicationDbContext.Count == 0)
+                {
+
+                }
             }
+
+
 
             var recordsViewModel = new RecordsViewModel();
             recordsViewModel.Records = applicationDbContext;
@@ -57,10 +77,14 @@ namespace EwidencjaWSK.Controllers
                 TotalItems = applicationDbContext.Count()
             };
 
+            recordsViewModel.Search = search;
+
             return View(recordsViewModel);
-            //return View(applicationDbContext);
 
         }
+
+
+
 
         public async Task<IActionResult> Details(int? id)
         {

@@ -14,6 +14,7 @@ namespace EwidencjaWSK.ViewModel
         public List<AdditionalDoc> AdditionalDocs { get; set; }
         public int Year { get; set; }
         public PaginationViewModel PaginationViewModel { get; set; }
+        public string Search { get; set; }
 
 
     }

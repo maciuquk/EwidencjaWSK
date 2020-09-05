@@ -5,11 +5,29 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Wszystkie kontrakty</h1>
+@if (String.IsNullOrEmpty(Model.Search))
+{
+    <h1>Wszystkie kontrakty</h1>
+}
+
+else
+{
+    <h1>Wyniki wyszukiwania po: @Model.Search</h1>
+}
+
 
 <p>
     <a asp-action="Create">Dodaj nowy kontrakt</a>
 </p>
+
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Search" name="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Szukaj</button>
+    </form>
+</nav>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -52,46 +70,6 @@
     <tbody>
 
 
-        <tr>
-            <td>
-                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            <td>
-                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-            </td>
-            @*<td>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-                </td>
-                <td>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-                </td>
-                <td>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-                </td>
-                <td>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-                </td>
-                <td>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-                </td>
-                <td>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-                </td>
-                <td>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Szukaj">
-                </td>*@
-
-
-        </tr>
 
 
         @foreach (var item in Model.Records)
@@ -127,15 +105,15 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.IsNecessaryMinistryPermit)
                     </td>*@
-            <td>
-                @{
-                    var supplierName = (from supplier in Model.Suppliers
-                                        where supplier.SupplierId == item.Supplier.SupplierId
-                                        select supplier.Name).First().ToString();
-                    @Html.Raw(supplierName);
-                }
+                <td>
+                    @{
+                        var supplierName = (from supplier in Model.Suppliers
+                                            where supplier.SupplierId == item.Supplier.SupplierId
+                                            select supplier.Name).First().ToString();
+                        @Html.Raw(supplierName);
+                    }
 
-            </td>
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.RecordId">Edycja</a> |
                     <a asp-action="Details" asp-route-id="@item.RecordId">Szczegóły</a> |
@@ -161,7 +139,7 @@
 
             {
             <li class="page-item">
-                <a class="page-link" asp-controller="Records" asp-route-page=@(Model.PaginationViewModel.CurrentPage - 1) aria-label="Previous">
+                <a class="page-link" asp-controller="Records" asp-route-page=@(Model.PaginationViewModel.CurrentPage - 1) asp-route-search=@Model.Search aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only">Previous</span>
                 </a>
@@ -189,7 +167,7 @@
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link" asp-controller="Records" asp-route-page=@i>@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-controller="Records" asp-route-page=@i asp-route-search=@Model.Search>@i</a></li>
                 }
             }
 
@@ -198,7 +176,7 @@
             {
                 <li class="page-item">
 
-                    <a class="page-link" asp-controller="Records" asp-route-page=@(Model.PaginationViewModel.CurrentPage + 1) aria-label="Next">
+                    <a class="page-link" asp-controller="Records" asp-route-page=@(Model.PaginationViewModel.CurrentPage + 1) asp-route-search=@Model.Search aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -218,4 +196,4 @@
             }
 
         </ul>
-</nav>
+    </nav>
