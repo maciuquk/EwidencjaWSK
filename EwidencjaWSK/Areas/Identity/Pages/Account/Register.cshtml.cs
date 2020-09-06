@@ -77,7 +77,16 @@ namespace EwidencjaWSK.Areas.Identity.Pages.Account
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 //add Admin to first user
-                await _userManager.AddToRoleAsync(user, "User");
+                if (_userManager.Users.Count() != 1)
+                {
+                    await _userManager.AddToRoleAsync(user, "User");
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                }
+                
+                
 
                 if (result.Succeeded)
                 {
