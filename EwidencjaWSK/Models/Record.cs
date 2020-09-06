@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EwidencjaWSK.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EwidencjaWSK.Models
 {
-    public class Record
+    public class Record : IAuditable
     {
         //public Record()
         //{
@@ -66,9 +67,12 @@ namespace EwidencjaWSK.Models
         
         [Display(Name = "Dostawca")]
         public Supplier Supplier { get; set; }
+
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
     }
 
-    public class Supplier
+    public class Supplier : IAuditable
     {
         //[ForeignKey("Record")]
 
@@ -92,10 +96,12 @@ namespace EwidencjaWSK.Models
         [Display(Name ="Kontrakt")]
         public ICollection<Record> Records { get; set; }
 
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
 
     }
 
-    public class AdditionalDoc
+    public class AdditionalDoc : IAuditable
     {
         public int AdditionalDocId { get; set; }
 
@@ -116,9 +122,11 @@ namespace EwidencjaWSK.Models
         //public Record Record { get; set; }
         public ICollection<RecordAdditionalDoc> Records { get; set; }
 
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
     }
      
-    public class Part
+    public class Part : IAuditable
     {
         public int PartId { get; set; }
 
@@ -132,6 +140,9 @@ namespace EwidencjaWSK.Models
         //[ForeignKey("Record")]
         //public int RecordId { get; set; }
         public  ICollection<RecordPart> Records { get; set; }
+
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
     }
 
     public class RecordPart
@@ -153,6 +164,4 @@ namespace EwidencjaWSK.Models
         public int AdditionalDocId { get; set; }
         public AdditionalDoc AdditionalDoc{ get; set; }
     }
-
-    // dodać audyt
 }
