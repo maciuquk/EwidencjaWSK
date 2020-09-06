@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
 using EwidencjaWSK.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EwidencjaWSK.Controllers
 {
+    [Authorize]
     public class AdditionalDocsController : Controller
     {
         private readonly ApplicationDbContext _context;

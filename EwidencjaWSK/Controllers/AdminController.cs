@@ -4,17 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
+using EwidencjaWSK.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EwidencjaWSK.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -67,6 +75,51 @@ namespace EwidencjaWSK.Controllers
         public IActionResult WyczyscBaze()
         {
             return null;
+        }
+
+        public IActionResult Changes()
+        {
+            return null;
+        }
+
+        public async Task<IActionResult> Users()
+        {
+            List<UserRoleViewModel> userRole = new List<UserRoleViewModel>();
+            
+            foreach (var us in _userManager.Users)
+            {
+                IdentityUser user = await _userManager.FindByEmailAsync(us.Email);
+                var role = await _userManager.GetRolesAsync(user);
+                userRole.Add(new UserRoleViewModel { ApplicationUser = user, Role = role });
+                
+            }
+            return View(userRole);
+        }
+
+        public async Task<IActionResult> MakeAdmin(string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            await _userManager.RemoveFromRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, "Admin");
+
+            return RedirectToAction("Users");
+        }
+
+        public async Task<IActionResult> MakeUser(string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            await _userManager.RemoveFromRoleAsync(user, "Admin");
+            await _userManager.AddToRoleAsync(user, "User");
+
+            return RedirectToAction("Users");
+        }
+
+        public async Task<IActionResult> Delete (string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            await _userManager.DeleteAsync(user);
+
+            return RedirectToAction("Users");
         }
     }
 

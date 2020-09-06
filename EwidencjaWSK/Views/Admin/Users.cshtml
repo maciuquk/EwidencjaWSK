@@ -1,0 +1,95 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@using EwidencjaWSK.ViewModel
+@inject SignInManager<IdentityUser> signInManager;
+@*@using IEnumerable<IdentityRole>*@
+
+@model IEnumerable<UserRoleViewModel>
+
+<h1>Użytkownicy</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Email
+            </th>
+            <th>
+                Uprawnienia
+            </th>
+            <th>
+                Zmiany
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.NormalizedEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="MakeUser" asp-route-userEmail="@item.ApplicationUser.NormalizedEmail">Lista zmian</a>
+
+
+                </td>
+                <td>
+
+                    <!-- Button trigger modal -->
+
+                    @if (!(this.User.IsInRole("Admin") && item.ApplicationUser.UserName == this.User.Identity.Name))
+                    
+                    {
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalContent">
+                            Usuń
+                        </button>}
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="ModalContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Ostrzeżenie</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Czy napewno chcesz usunąć bezpowrotnie użytkownika?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
+                                    <a type="button" class="btn btn-danger" asp-action="Delete" asp-route-userEmail="@item.ApplicationUser.NormalizedEmail">TAK</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (item.Role.FirstOrDefault() == "Admin")
+                    {
+                        @if (!(this.User.IsInRole("Admin") && item.ApplicationUser.UserName == this.User.Identity.Name))
+                        {
+                            <a class="btn btn-primary" asp-action="MakeUser" asp-route-userEmail="@item.ApplicationUser.NormalizedEmail">Zrób usera </a>
+                        }
+                        
+
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" asp-action="MakeAdmin" asp-route-userEmail="@item.ApplicationUser.NormalizedEmail">Zrób admina</a>
+                    }
+
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+
+
+</table>

@@ -9,9 +9,11 @@ using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
 using Microsoft.AspNetCore.Routing;
 using EwidencjaWSK.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EwidencjaWSK.Controllers
 {
+    [Authorize]
     public class RecordAdditionalDocsController : Controller
     {
         private readonly ApplicationDbContext _context;

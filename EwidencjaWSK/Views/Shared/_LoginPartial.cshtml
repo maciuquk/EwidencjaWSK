@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<IdentityUser> signInManager
 @inject UserManager<IdentityUser> UserManager
 
     <ul class="navbar-nav">
-        @if (SignInManager.IsSignedIn(User))
+        @if (signInManager.IsSignedIn(User))
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Witaj @User.Identity.Name!</a>
@@ -16,29 +16,36 @@
         }
         else
         {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
-            </li>
-            <li class="nav-item">
+            @*@if (this.User.IsInRole("Admin"))
+            {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
+                    </li>
+            }*@
+
+            @*<li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
-            </li>
+            </li>*@
 
 
         }
+        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <div class="dropdown show">
+                    <a class="btn btn-default dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
 
-        <li class="nav-item">
-            <div class="dropdown show">
-                <a class="btn btn-default dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Admin
-                </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Changes">Lista zmian</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Users">Użytkownicy</a>
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja nowego użytkownika</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ZasiejBaze">Zasiej bazę</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UsunBaze">Usuń bazę</a>
+                    </div>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Index">Lista zmian</a>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Parts" asp-action="Create">Użytkownicy</a>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ZasiejBaze">Zasiej bazę</a>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UsunBaze">Usuń bazę</a>
                 </div>
-
-            </div>
-        </li>
+            </li>
+        }
     </ul>
