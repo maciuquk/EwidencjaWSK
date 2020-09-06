@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using EwidencjaWSK.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,10 @@ namespace EwidencjaWSK.Data
         {
             modelbuilder.Entity<RecordPart>().HasKey(sc => new { sc.RecordId, sc.PartId });
             modelbuilder.Entity<RecordAdditionalDoc>().HasKey(sc => new { sc.RecordId, sc.AdditionalDocId });
+
+            modelbuilder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "User", NormalizedName = "USER", Id = Guid.NewGuid().ToString(), ConcurrencyStamp = Guid.NewGuid().ToString() });
+            modelbuilder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN", Id = Guid.NewGuid().ToString(), ConcurrencyStamp = Guid.NewGuid().ToString() });
+
             base.OnModelCreating(modelbuilder);
         }
 

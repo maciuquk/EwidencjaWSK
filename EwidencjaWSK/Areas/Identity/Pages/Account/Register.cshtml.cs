@@ -76,8 +76,13 @@ namespace EwidencjaWSK.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                //add Admin to first user
+                await _userManager.AddToRoleAsync(user, "User");
+
                 if (result.Succeeded)
                 {
+                    
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -101,6 +106,9 @@ namespace EwidencjaWSK.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
+               
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
