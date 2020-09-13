@@ -299,10 +299,12 @@ namespace EwidencjaWSK.Controllers
         [HttpGet]
         public async Task<IActionResult> ReportsToPrint(int Year = 0)
         {
-            List<Record> recordListForYear = new List<Record>();
-            recordListForYear = await (_context.Records.Where(n => n.Date.Year == Year).ToListAsync());
-
-            return View(recordListForYear);
+            var recordViewList = new RecordsViewModel();
+            recordViewList.Records = await (_context.Records.Where(n => n.Date.Year == Year).ToListAsync());
+            recordViewList.Suppliers = await (from supplier in _context.Suppliers
+                                                select supplier).ToListAsync();
+            recordViewList.Year = Year;
+            return View(recordViewList);
         }
     }
 }
