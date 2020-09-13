@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace EwidencjaWSK.ViewModel
 {
-    public interface IAuditable
+    public class ReportsViewModel
     {
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
+        public int Year { get; set; }
 
     }
 }

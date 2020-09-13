@@ -1,0 +1,31 @@
+﻿@model IEnumerable<EwidencjaWSK.ViewModel.ReportsViewModel>
+
+@{
+    ViewData["Title"] = "Reports";
+    //Layout = "~/Views/Shared/Index.cshtml";
+}
+
+<h1>Raporty</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Wybierz rok
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>
+                @foreach (var item in Model)
+                {
+                    @Html.ActionLink(@item.Year.ToString() +" | ", "ReportsToPrint", new { Year = item.Year })
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>

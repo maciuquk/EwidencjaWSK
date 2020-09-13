@@ -9,6 +9,7 @@ using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
 using EwidencjaWSK.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using EwidencjaWSK.Services;
 
 namespace EwidencjaWSK.Controllers
 {
@@ -25,6 +26,8 @@ namespace EwidencjaWSK.Controllers
         // GET: Parts
         public async Task<IActionResult> Index(int page = 1)
         {
+          
+
             int pageSize = 12;
 
             var partViewModel = new PartViewModel();

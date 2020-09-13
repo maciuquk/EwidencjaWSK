@@ -269,5 +269,40 @@ namespace EwidencjaWSK.Controllers
 
             return RedirectToAction("Index", routeValues);
         }
+
+        public async Task<IActionResult> Reports()
+        {
+            var thisYear = DateTime.Now.Year;
+            var allYears = new List<ReportsViewModel>();
+
+            foreach (var item in _context.Records)
+            {
+                bool isNoted = false;
+
+                foreach (var item2 in allYears)
+                {
+                    if (item.Date.Year == item2.Year)
+                    { isNoted = true; }
+
+                }
+
+                if (isNoted == false)
+                {
+                    allYears.Add(new ReportsViewModel { Year = item.Date.Year });
+                }
+            }
+
+            return View(allYears);
+                
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReportsToPrint(int Year = 0)
+        {
+            List<Record> recordListForYear = new List<Record>();
+            recordListForYear = await (_context.Records.Where(n => n.Date.Year == Year).ToListAsync());
+
+            return View(recordListForYear);
+        }
     }
 }

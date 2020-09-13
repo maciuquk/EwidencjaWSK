@@ -10,11 +10,6 @@ namespace EwidencjaWSK.Models
 {
     public class Record : IAuditable
     {
-        //public Record()
-        //{
-        //    this.Suppliers= new HashSet<Supplier>();
-        //}
-
         public int RecordId { get; set; }
 
         [Required]
@@ -33,13 +28,13 @@ namespace EwidencjaWSK.Models
         public decimal Value{ get; set; }
 
         [Display(Name = "Waluta")]
-        public string Currency { get; set; } // zrobić enuma do wyboru $ € PLN lub inne
+        public string Currency { get; set; }
 
         [Display(Name = "Opis")]
         public string Description { get; set; }
 
         [Display(Name = "Rodzaj obrotu")]
-        public string KindOfTransaction { get; set; } // uzbrojenie / dual use
+        public string KindOfTransaction { get; set; }
 
         [Display(Name = "Czy sprawdzona lista odmów?")]
         public bool IsCheckDenyList { get; set; }
@@ -48,10 +43,10 @@ namespace EwidencjaWSK.Models
         public bool IsCheckWarningSignalList { get; set; }
 
         [Display(Name = "Czy przedmiot obrotu w bazie części?")]
-        public bool IsInPartsBase { get; set; } // numer w bazie danych dostawcy
+        public bool IsInPartsBase { get; set; }
 
         [Display(Name = "Czy wymagane jest zezwolenie ministerstwa?")]
-        public bool IsNecessaryMinistryPermit{ get; set; } // tak / nie
+        public bool IsNecessaryMinistryPermit{ get; set; }
 
         #endregion
 
@@ -68,14 +63,10 @@ namespace EwidencjaWSK.Models
         [Display(Name = "Dostawca")]
         public Supplier Supplier { get; set; }
 
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
     }
 
     public class Supplier : IAuditable
     {
-        //[ForeignKey("Record")]
-
         public int SupplierId { get; set; }
 
         [Display(Name = "Nazwa Kontrahenta")]
@@ -96,8 +87,7 @@ namespace EwidencjaWSK.Models
         [Display(Name ="Kontrakt")]
         public ICollection<Record> Records { get; set; }
 
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
+       
 
     }
 
@@ -117,13 +107,9 @@ namespace EwidencjaWSK.Models
         public DateTime Date { get; set; }
 
         [Display(Name = "Kontrakt")]
-        //[ForeignKey("Record")]
-        //public int RecordId { get; set; }
-        //public Record Record { get; set; }
         public ICollection<RecordAdditionalDoc> Records { get; set; }
 
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
+        
     }
      
     public class Part : IAuditable
@@ -136,13 +122,7 @@ namespace EwidencjaWSK.Models
         [Display(Name = "Czy jest uzbrojeniem?")]
         public bool IsInArmedList { get; set; }
 
-        //[Display(Name = "Kontrakt")]
-        //[ForeignKey("Record")]
-        //public int RecordId { get; set; }
         public  ICollection<RecordPart> Records { get; set; }
-
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
     }
 
     public class RecordPart
@@ -150,8 +130,6 @@ namespace EwidencjaWSK.Models
         [Display(Name ="Kontrakt numer")]
         public int RecordId { get; set; }
         public Record Record { get; set; }
-       
-        //[Display(Name ="Nazwa części")]
         public int PartId { get; set; }
         public Part Part { get; set; }
 
