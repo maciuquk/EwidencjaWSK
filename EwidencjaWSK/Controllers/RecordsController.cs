@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using ClosedXML.Excel;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
-using Microsoft.AspNetCore.Routing;
+using EwidencjaWSK.Services;
 using EwidencjaWSK.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EwidencjaWSK.Controllers
 {
@@ -17,10 +22,12 @@ namespace EwidencjaWSK.Controllers
     public class RecordsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly HttpContextAccessor _httpContext;
 
         public RecordsController(ApplicationDbContext context)
         {
             _context = context;
+            //_httpContext = httpContext;
         }
 
         public async Task<IActionResult> Index(int page = 1, string search = "", int Year = 0)
@@ -296,6 +303,116 @@ namespace EwidencjaWSK.Controllers
                 
         }
 
+        public async Task<IActionResult> PrintExcel(int Year = 0)
+        {
+            #region próba1
+            //string path = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Host}:{HttpContext.Request.Host.Port}/Records/ReportsToPrint";
+            //var render = new IronPdf.HtmlToPdf();
+            //var doc = render.RenderUrlAsPdf(path);
+            //doc.SaveAs($@"D:\htmlpfd.pdf");
+
+            //return RedirectToAction("ReportsToPrint");
+            #endregion
+
+            //var exportToExcel = new ExportToExcel();
+            //exportToExcel.MakeExcelSheet(await (_context.Records.Where(n => n.Date.Year == Year).ToListAsync()), await (_context.Suppliers.ToListAsync());
+
+            var datatoExport = await(_context.Records.Where(n => n.Date.Year == Year).ToListAsync());
+            var recordPart = await (_context.RecordsParts.ToListAsync());
+            var recordAdditionalDoc = await (_context.RecordsAdditionalDocs.ToListAsync());
+            var suppliers = await (_context.Suppliers.ToListAsync());
+            var additionalDocs = await (_context.AdditionalDocs.ToListAsync());
+            var parts = await (_context.Parts.ToListAsync());
+
+            #region excel
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Raport");
+                var currentRow = 1;
+                var currentRecord = 0;
+
+                worksheet.Cell(currentRow, 1).Value = "Ewidencja WSK dla " + Year.ToString() +" roku";
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = "Raport wygenerowano " + DateTime.Now.Year + "." + DateTime.Now.Month + "." + DateTime.Now.Day;
+                currentRow++;
+
+                worksheet.Cell(currentRow, 1).Value = "Lp";
+                worksheet.Cell(currentRow, 2).Value = "Numer kontraktu";
+                worksheet.Cell(currentRow, 3).Value = "Data";
+                worksheet.Cell(currentRow, 4).Value = "Wartość";
+                worksheet.Cell(currentRow, 5).Value = "Waluta";
+                worksheet.Cell(currentRow, 6).Value = "Dostawca";
+                worksheet.Cell(currentRow, 7).Value = "Części";
+                worksheet.Cell(currentRow, 8).Value = "Dokumenty";
+
+                foreach (var record in datatoExport)
+                {
+                    currentRow++;
+                    currentRecord++;
+                    worksheet.Cell(currentRow, 1).Value = currentRecord;
+                    worksheet.Cell(currentRow, 2).Value = record.Number;
+                    worksheet.Cell(currentRow, 3).Value = record.Date;
+                    worksheet.Cell(currentRow, 4).Value = record.Value;
+                    worksheet.Cell(currentRow, 5).Value = record.Currency;
+                    worksheet.Cell(currentRow, 6).Value = from supplierName in suppliers
+                                                          where supplierName.SupplierId == record.SuplierId
+                                                          select supplierName.Name;
+                    var beginingRow = currentRow;
+
+                    if (record.Parts != null)
+                    {
+                        
+                        foreach (var part in recordPart)
+                        {
+                            if (part.RecordId == record.RecordId)
+                            {
+                                worksheet.Cell(currentRow, 7).Value = "Tutaj ma być część";
+                                currentRow++;
+                            }
+                        }
+                    }
+
+                    if (record.AdditionalDocs != null)
+                    {
+                        currentRow = beginingRow;
+                        
+                        foreach (var doc in recordAdditionalDoc)
+                        {
+                            if (doc.RecordId == record.RecordId)
+                            {
+                                worksheet.Cell(currentRow, 8).Value = "Tutaj ma być dokumencik";
+                                currentRow++;
+                            }
+                        }
+                    }
+
+
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "Raport.xlsx");
+                }
+            }
+
+            #endregion
+
+            var routeValues = new RouteValueDictionary
+            {
+                {"Year", Year }
+            };
+
+            return RedirectToAction("ReportsToPrint", routeValues);
+
+           
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> ReportsToPrint(int Year = 0)
         {
@@ -304,7 +421,18 @@ namespace EwidencjaWSK.Controllers
             recordViewList.Suppliers = await (from supplier in _context.Suppliers
                                                 select supplier).ToListAsync();
             recordViewList.Year = Year;
+            
             return View(recordViewList);
         }
+        
+        public string GetBaseUrl()
+        {
+            var request = _httpContext.HttpContext.Request;
+            var host = request.Host.ToUriComponent();
+            var pathBase = request.PathBase.ToUriComponent();
+            return $"{request.Scheme}://{host}{pathBase}";
+        }
+
+
     }
 }
