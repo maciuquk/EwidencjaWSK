@@ -305,18 +305,6 @@ namespace EwidencjaWSK.Controllers
 
         public async Task<IActionResult> PrintExcel(int Year = 0)
         {
-            #region próba1
-            //string path = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Host}:{HttpContext.Request.Host.Port}/Records/ReportsToPrint";
-            //var render = new IronPdf.HtmlToPdf();
-            //var doc = render.RenderUrlAsPdf(path);
-            //doc.SaveAs($@"D:\htmlpfd.pdf");
-
-            //return RedirectToAction("ReportsToPrint");
-            #endregion
-
-            //var exportToExcel = new ExportToExcel();
-            //exportToExcel.MakeExcelSheet(await (_context.Records.Where(n => n.Date.Year == Year).ToListAsync()), await (_context.Suppliers.ToListAsync());
-
             var datatoExport = await(_context.Records.Where(n => n.Date.Year == Year).ToListAsync());
             var recordPart = await (_context.RecordsParts.ToListAsync());
             var recordAdditionalDoc = await (_context.RecordsAdditionalDocs.ToListAsync());
@@ -367,7 +355,9 @@ namespace EwidencjaWSK.Controllers
                         {
                             if (part.RecordId == record.RecordId)
                             {
-                                worksheet.Cell(currentRow, 7).Value = "Tutaj ma być część";
+                                worksheet.Cell(currentRow, 7).Value = (from p in parts
+                                                                       where p.PartId == part.PartId
+                                                                       select p.Name);
                                 currentRow++;
                             }
                         }
@@ -381,7 +371,9 @@ namespace EwidencjaWSK.Controllers
                         {
                             if (doc.RecordId == record.RecordId)
                             {
-                                worksheet.Cell(currentRow, 8).Value = "Tutaj ma być dokumencik";
+                                worksheet.Cell(currentRow, 8).Value = (from d in additionalDocs
+                                                                       where d.AdditionalDocId == doc.AdditionalDocId
+                                                                       select d.KindOfDoc + " " + d.Number);
                                 currentRow++;
                             }
                         }
