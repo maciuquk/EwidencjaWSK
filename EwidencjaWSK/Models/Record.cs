@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EwidencjaWSK.Models
 {
-    public class Record : IAuditable
+    public class Record
     {
         public int RecordId { get; set; }
 
@@ -65,7 +65,7 @@ namespace EwidencjaWSK.Models
 
     }
 
-    public class Supplier : IAuditable
+    public class Supplier 
     {
         public int SupplierId { get; set; }
 
@@ -91,7 +91,7 @@ namespace EwidencjaWSK.Models
 
     }
 
-    public class AdditionalDoc : IAuditable
+    public class AdditionalDoc
     {
         public int AdditionalDocId { get; set; }
 
@@ -112,7 +112,7 @@ namespace EwidencjaWSK.Models
         
     }
      
-    public class Part : IAuditable
+    public class Part 
     {
         public int PartId { get; set; }
 

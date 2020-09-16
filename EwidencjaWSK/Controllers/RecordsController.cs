@@ -334,11 +334,18 @@ namespace EwidencjaWSK.Controllers
                 worksheet.Cell(currentRow, 7).Value = "Części";
                 worksheet.Cell(currentRow, 8).Value = "Dokumenty";
 
+                for (int i = 1; i <= 8; i++)
+                {
+                    worksheet.Cell(currentRow, i).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, i).Style.Font.FontSize = 15;
+                }
+
                 foreach (var record in datatoExport)
                 {
                     currentRow++;
                     currentRecord++;
                     worksheet.Cell(currentRow, 1).Value = currentRecord;
+                    worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
                     worksheet.Cell(currentRow, 2).Value = record.Number;
                     worksheet.Cell(currentRow, 3).Value = record.Date;
                     worksheet.Cell(currentRow, 4).Value = record.Value;
