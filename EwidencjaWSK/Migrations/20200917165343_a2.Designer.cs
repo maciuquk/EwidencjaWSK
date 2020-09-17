@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EwidencjaWSK.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200907172713_l1")]
-    partial class l1
+    [Migration("20200917165343_a2")]
+    partial class a2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,22 +28,10 @@ namespace EwidencjaWSK.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("KindOfDoc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
@@ -54,6 +42,36 @@ namespace EwidencjaWSK.Migrations
                     b.ToTable("AdditionalDocs");
                 });
 
+            modelBuilder.Entity("EwidencjaWSK.Models.Audit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("KeyValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TableName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Audits");
+                });
+
             modelBuilder.Entity("EwidencjaWSK.Models.Part", b =>
                 {
                     b.Property<int>("PartId")
@@ -61,20 +79,8 @@ namespace EwidencjaWSK.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsInArmedList")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -90,12 +96,6 @@ namespace EwidencjaWSK.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
@@ -119,12 +119,6 @@ namespace EwidencjaWSK.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("KindOfTransaction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
@@ -185,18 +179,6 @@ namespace EwidencjaWSK.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -243,15 +225,15 @@ namespace EwidencjaWSK.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "610021ab-95e4-4571-8cde-ad2a9b40a44b",
-                            ConcurrencyStamp = "5d2a2da0-9b70-4878-8318-7eedbb718444",
+                            Id = "99e522ed-9d2a-4475-9d8d-2e8288a2742c",
+                            ConcurrencyStamp = "7da9cb5f-5e15-4e28-a5ca-6e08b5d1ee94",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "5f44614b-b01b-40c7-8170-c68768e1a380",
-                            ConcurrencyStamp = "86c46510-01cc-43a9-9299-1deb821195fe",
+                            Id = "28671b48-adc5-44bb-9c71-6d4404e4d3c9",
+                            ConcurrencyStamp = "6aba7a84-dab0-4014-a8ae-c4d43423c76c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

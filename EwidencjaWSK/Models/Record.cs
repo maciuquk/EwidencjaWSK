@@ -87,8 +87,6 @@ namespace EwidencjaWSK.Models
         [Display(Name ="Kontrakt")]
         public ICollection<Record> Records { get; set; }
 
-       
-
     }
 
     public class AdditionalDoc

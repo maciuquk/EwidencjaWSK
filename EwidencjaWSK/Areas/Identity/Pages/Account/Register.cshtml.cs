@@ -16,8 +16,8 @@ using Microsoft.Extensions.Logging;
 
 namespace EwidencjaWSK.Areas.Identity.Pages.Account
 {
-    //[AllowAnonymous]
-    [Authorize(Roles ="Admin")]
+    [AllowAnonymous]
+    //[Authorize(Roles ="Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

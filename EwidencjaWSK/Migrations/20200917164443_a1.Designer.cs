@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EwidencjaWSK.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200906055021_p1")]
-    partial class p1
+    [Migration("20200917164443_a1")]
+    partial class a1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,33 @@ namespace EwidencjaWSK.Migrations
                     b.HasKey("AdditionalDocId");
 
                     b.ToTable("AdditionalDocs");
+                });
+
+            modelBuilder.Entity("EwidencjaWSK.Models.Audit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("KeyValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TableName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Audits");
                 });
 
             modelBuilder.Entity("EwidencjaWSK.Models.Part", b =>
@@ -195,15 +222,15 @@ namespace EwidencjaWSK.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c24a1a70-385f-4956-a60a-74ab08ec278b",
-                            ConcurrencyStamp = "e9594247-3b16-48f7-a9d2-91844da6207e",
+                            Id = "1f7c49ea-e005-408d-be0e-3377208a3331",
+                            ConcurrencyStamp = "425d1981-5434-4847-96dc-564b97d0508e",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "ae613719-84a2-4467-bee7-f66aca2a009c",
-                            ConcurrencyStamp = "9bef8be1-85b9-4127-a2eb-85d6b3ea0a89",
+                            Id = "03fe8219-34f2-4e82-b3c4-1c2d1752246b",
+                            ConcurrencyStamp = "35bc605a-a4b9-4ce6-a3f2-c1ed277c73a8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
