@@ -103,14 +103,18 @@ namespace EwidencjaWSK.Controllers
             auditDates.To = auditDates.To.AddSeconds(59);
 
             //var audit = _context.Audits.ToList();
-            var listaDat = new List<DateTime>();
+            var listaTabel = new List<String>();
 
             foreach (var item in _context.Audits)
             {
-                listaDat.Add(item.DateTime);
+                if (item.TableName != null)
+                {
+                    listaTabel.Add(item.TableName.ToString());
+
+                }
             }
 
-            var audit = _context.Audits.Where(n=>n.DateTime >= auditDates.From && n.DateTime <= auditDates.To).ToList();
+            var audit = _context.Audits.Where(n=>n.DateTime >= auditDates.From && n.DateTime <= auditDates.To && n.TableName !="Role" && n.TableName != "Użytkownicy").ToList();
             var changes = new List<AuditViewModel>();
 
             #region 1try
