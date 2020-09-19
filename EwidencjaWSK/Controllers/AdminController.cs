@@ -8,10 +8,11 @@ using EwidencjaWSK.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EwidencjaWSK.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -77,9 +78,86 @@ namespace EwidencjaWSK.Controllers
             return null;
         }
 
-        public IActionResult Changes()
+        public IActionResult Audit()
         {
-            return null;
+            var auditDates = new AuditDateViewModel();
+            auditDates.From = DateTime.Now;
+            auditDates.To = DateTime.Now;
+            return View(auditDates);
+        }
+
+        public IActionResult Changes(AuditDateViewModel auditDates)
+        {
+            if (auditDates.From == null)
+            {
+                auditDates.From = DateTime.Now;
+            }
+
+            if (auditDates.To == null)
+            {
+                auditDates.To = DateTime.Now;
+            }
+
+            auditDates.To = auditDates.To.AddHours(23);
+            auditDates.To = auditDates.To.AddMinutes(59);
+            auditDates.To = auditDates.To.AddSeconds(59);
+
+
+
+            //var audit = _context.Audits.ToList();
+            var listaDat = new List<DateTime>();
+
+            foreach (var item in _context.Audits)
+            {
+                listaDat.Add(item.DateTime);
+            }
+
+            var audit = _context.Audits.Where(n=>n.DateTime >= auditDates.From && n.DateTime <= auditDates.To).ToList();
+            var changes = new List<AuditViewModel>();
+
+            #region 1try
+            //int id = 0;
+            //string whatChanged = "";
+            //foreach (var item in audit)
+            //{
+            //    if (!string.IsNullOrEmpty(item.OldValues) && (!string.IsNullOrEmpty(item.NewValues)))
+            //    {
+            //        var first = item.OldValues.Split(' ');
+            //        var second = item.NewValues.Split(' ');
+            //        var primary = first.Length > second.Length ? first : second;
+            //        var secondary = primary == second ? first : second;
+            //        var difference = primary.Except(secondary).ToArray();
+
+            //        foreach (var item2 in difference)
+            //        {
+            //            whatChanged += item2;
+            //        }
+            //    }
+            //    else if (string.IsNullOrEmpty(item.OldValues))
+            //    {
+            //        whatChanged = "puste";
+            //    }
+            //    else if (string.IsNullOrEmpty(item.NewValues))
+            //    {
+            //        whatChanged = "puste";
+            //    }
+
+            //    id++;
+            //    changes.Add(new AuditViewModel { Date = item.DateTime, Id = id, Changes = whatChanged });
+
+            //}
+
+            #endregion
+
+            int id = 0;
+            foreach (var item in audit)
+            {
+                id++;
+                changes.Add(new AuditViewModel { Id = id, Date = item.DateTime, BeforeChanges = item.OldValues, AfterChanges = item.NewValues, Table=item.TableName });
+
+            }
+
+            return View(changes);
         }
 
         public async Task<IActionResult> Users()

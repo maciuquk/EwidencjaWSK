@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EwidencjaWSK.Models;
 using EwidencjaWSK.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
@@ -15,14 +18,11 @@ using Newtonsoft.Json;
 namespace EwidencjaWSK.Data
 {
 
-    public class ApplicationDbContext : IdentityDbContext
-    {
-        
+    public class ApplicationDbContext : IdentityDbContext { 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,8 +36,6 @@ namespace EwidencjaWSK.Data
             base.OnModelCreating(modelBuilder);
         }
 
-
-
         public DbSet<Record> Records { get; set; }
         public DbSet<AdditionalDoc> AdditionalDocs { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
@@ -47,7 +45,6 @@ namespace EwidencjaWSK.Data
         public DbSet<RecordAdditionalDoc> RecordsAdditionalDocs { get; set; }
 
         public DbSet<Audit> Audits { get; set; }
-
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -150,11 +147,9 @@ namespace EwidencjaWSK.Data
 
     public class AuditEntry
     {
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public AuditEntry(EntityEntry entry, UserManager<IdentityUser> userManager)
+        public AuditEntry(EntityEntry entry)
         {
-            _userManager = userManager;
             Entry = entry;
         }
 
@@ -169,8 +164,41 @@ namespace EwidencjaWSK.Data
 
         public Audit ToAudit()
         {
+
             var audit = new Audit();
-            audit.TableName = TableName;
+           // audit.TableName = TableName;
+
+            switch (TableName)
+            {
+                case "Records":
+                    audit.TableName = "Kontrakty";
+                    break;
+                case "Suppliers":
+                    audit.TableName = "Dostawcy";
+                    break;
+                case "AdditionalDocs":
+                    audit.TableName = "Dokumenty";
+                    break;
+                case "Parts":
+                    audit.TableName = "Części";
+                    break;
+                case "RecordParts":
+                    audit.TableName = "Przypisanie części";
+                    break;
+                case "RecordAdditionalDocs":
+                    audit.TableName = "Przypisanie dokumentu";
+                    break;
+                case "AspNetUsers":
+                    audit.TableName = "Użytkownicy";
+                    break;
+                case "AspNetUserRoles":
+                    audit.TableName = "Role";
+                    break;
+                default:
+                    audit.TableName = TableName;
+                    break;
+            }
+
             audit.DateTime = DateTime.UtcNow;
             audit.KeyValues = JsonConvert.SerializeObject(KeyValues);
             audit.OldValues = OldValues.Count == 0 ? null : JsonConvert.SerializeObject(OldValues);

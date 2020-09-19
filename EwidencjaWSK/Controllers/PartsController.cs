@@ -121,6 +121,7 @@ namespace EwidencjaWSK.Controllers
                 try
                 {
                     _context.Update(part);
+                   
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
