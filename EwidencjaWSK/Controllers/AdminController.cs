@@ -102,8 +102,6 @@ namespace EwidencjaWSK.Controllers
             auditDates.To = auditDates.To.AddMinutes(59);
             auditDates.To = auditDates.To.AddSeconds(59);
 
-
-
             //var audit = _context.Audits.ToList();
             var listaDat = new List<DateTime>();
 
@@ -152,9 +150,18 @@ namespace EwidencjaWSK.Controllers
             int id = 0;
             foreach (var item in audit)
             {
-                id++;
-                changes.Add(new AuditViewModel { Id = id, Date = item.DateTime, BeforeChanges = item.OldValues, AfterChanges = item.NewValues, Table=item.TableName });
+                
 
+                if (item.OldValues ==null && item.NewValues ==null)
+                {
+                    
+                }
+                else
+                {
+                    id++;
+                    changes.Add(new AuditViewModel { Id = id, Date = item.DateTime, BeforeChanges = item.OldValues, AfterChanges = item.NewValues, Table = item.TableName });
+                }
+                
             }
 
             return View(changes);
