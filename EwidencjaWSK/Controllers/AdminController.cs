@@ -51,7 +51,7 @@ namespace EwidencjaWSK.Controllers
 
                 newRecord.Number = "Kontrakt nr. " + rnd.Next(1000).ToString();
                 newRecord.Date = new DateTime(2020,2,4);
-                newRecord.Value = 1000;
+                newRecord.Value = "1000";
                 newRecord.SuplierId = 4;
                 _context.Records.Add(newRecord);
                 _context.SaveChanges();

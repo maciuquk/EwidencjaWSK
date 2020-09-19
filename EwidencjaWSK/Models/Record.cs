@@ -25,7 +25,9 @@ namespace EwidencjaWSK.Models
         public DateTime Date { get; set; }
 
         [Display(Name = "Wartość")]
-        public decimal Value{ get; set; }
+        //[DataType(DataType.Currency)]
+        //[DisplayFormat(DataFormatString = "{0:C0}", ApplyFormatInEditMode = true)]
+        public string Value{ get; set; }
 
         [Display(Name = "Waluta")]
         public string Currency { get; set; }

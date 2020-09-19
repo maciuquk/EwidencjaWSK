@@ -93,8 +93,6 @@ namespace EwidencjaWSK.Controllers
         }
 
 
-
-
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
