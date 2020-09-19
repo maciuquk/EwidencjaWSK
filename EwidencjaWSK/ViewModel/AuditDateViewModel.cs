@@ -17,5 +17,11 @@ namespace EwidencjaWSK.ViewModel
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime To { get; set; }
+
+        [Display(Name ="Użytkownik")]
+        public List<string> User { get; set; }
+
+        [Display(Name ="Wszyscy użytkownicy")]
+        public bool AllUsers { get; set; }
     }
 }

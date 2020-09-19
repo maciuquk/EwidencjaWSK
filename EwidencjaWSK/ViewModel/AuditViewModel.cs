@@ -25,6 +25,9 @@ namespace EwidencjaWSK.ViewModel
         [Display(Name ="Tabela")]
         public string Table { get; set; }
 
+        [Display(Name ="Dokonał zmiany")]
+        public string ChangedBy { get; set; }
+
     }
 
 

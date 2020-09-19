@@ -20,9 +20,10 @@ namespace EwidencjaWSK.Data
 
     public class ApplicationDbContext : IdentityDbContext { 
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor contextHttp)
             : base(options)
         {
+            _contextHttp = contextHttp;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +36,8 @@ namespace EwidencjaWSK.Data
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public readonly IHttpContextAccessor _contextHttp;
 
         public DbSet<Record> Records { get; set; }
         public DbSet<AdditionalDoc> AdditionalDocs { get; set; }
@@ -63,7 +66,7 @@ namespace EwidencjaWSK.Data
                 if (entry.Entity is Audit || entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
                     continue;
 
-                var auditEntry = new AuditEntry(entry);
+                var auditEntry = new AuditEntry(entry, _contextHttp);
                 auditEntry.TableName = entry.Metadata.GetTableName(); // EF Core 3.1: entry.Metadata.GetTableName();
                 auditEntries.Add(auditEntry);
 
@@ -147,11 +150,16 @@ namespace EwidencjaWSK.Data
 
     public class AuditEntry
     {
-
-        public AuditEntry(EntityEntry entry)
+       
+        
+        public AuditEntry(EntityEntry entry, IHttpContextAccessor contextHttp)
         {
+            _contextHttp = contextHttp;
             Entry = entry;
         }
+
+
+        private readonly IHttpContextAccessor _contextHttp;
 
         public EntityEntry Entry { get; }
         public string TableName { get; set; }
@@ -164,6 +172,9 @@ namespace EwidencjaWSK.Data
 
         public Audit ToAudit()
         {
+
+            var currentUser = _contextHttp.HttpContext.User?.Identity?.Name;
+
 
             var audit = new Audit();
            // audit.TableName = TableName;
@@ -203,6 +214,8 @@ namespace EwidencjaWSK.Data
             audit.KeyValues = JsonConvert.SerializeObject(KeyValues);
             audit.OldValues = OldValues.Count == 0 ? null : JsonConvert.SerializeObject(OldValues);
             audit.NewValues = NewValues.Count == 0 ? null : JsonConvert.SerializeObject(NewValues);
+            audit.ChangedBy = currentUser.ToString();
+
             return audit;
         }
     }
