@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
+using EwidencjaWSK.Services;
 using EwidencjaWSK.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -106,53 +107,18 @@ namespace EwidencjaWSK.Controllers
             var audit = _context.Audits.Where(n=>n.DateTime >= auditDates.From && n.DateTime <= auditDates.To && n.TableName !="Role" && n.TableName != "Użytkownicy").ToList();
             var changes = new List<AuditViewModel>();
 
-            #region 1try
-            //int id = 0;
-            //string whatChanged = "";
-            //foreach (var item in audit)
-            //{
-            //    if (!string.IsNullOrEmpty(item.OldValues) && (!string.IsNullOrEmpty(item.NewValues)))
-            //    {
-            //        var first = item.OldValues.Split(' ');
-            //        var second = item.NewValues.Split(' ');
-            //        var primary = first.Length > second.Length ? first : second;
-            //        var secondary = primary == second ? first : second;
-            //        var difference = primary.Except(secondary).ToArray();
-
-            //        foreach (var item2 in difference)
-            //        {
-            //            whatChanged += item2;
-            //        }
-            //    }
-            //    else if (string.IsNullOrEmpty(item.OldValues))
-            //    {
-            //        whatChanged = "puste";
-            //    }
-            //    else if (string.IsNullOrEmpty(item.NewValues))
-            //    {
-            //        whatChanged = "puste";
-            //    }
-
-            //    id++;
-            //    changes.Add(new AuditViewModel { Date = item.DateTime, Id = id, Changes = whatChanged });
-
-            //}
-
-            #endregion
-
             int id = 0;
             foreach (var item in audit)
             {
-                
-
-                if (item.OldValues ==null && item.NewValues ==null)
+                if (item.OldValues == null && item.NewValues == null)
                 {
-                    
                 }
                 else
                 {
+                    string whatChanged = ChangesComparisonService.Changes(item.OldValues, item.NewValues);
+
                     id++;
-                    changes.Add(new AuditViewModel { Id = id, Date = item.DateTime, BeforeChanges = item.OldValues, AfterChanges = item.NewValues, Table = item.TableName, ChangedBy = item.ChangedBy });
+                    changes.Add(new AuditViewModel { Id = id, Changes = whatChanged, Date = item.DateTime, BeforeChanges = item.OldValues, AfterChanges = item.NewValues, Table = item.TableName, ChangedBy = item.ChangedBy });
                 }
                 
             }

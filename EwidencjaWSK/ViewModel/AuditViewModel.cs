@@ -22,6 +22,9 @@ namespace EwidencjaWSK.ViewModel
         [Display(Name ="Po")]
         public string AfterChanges { get; set; }
 
+        [Display(Name = "Zmiana")]
+        public string Changes { get; set; }
+
         [Display(Name ="Tabela")]
         public string Table { get; set; }
 

@@ -150,8 +150,6 @@ namespace EwidencjaWSK.Data
 
     public class AuditEntry
     {
-       
-        
         public AuditEntry(EntityEntry entry, IHttpContextAccessor contextHttp)
         {
             _contextHttp = contextHttp;
@@ -172,9 +170,6 @@ namespace EwidencjaWSK.Data
 
         public Audit ToAudit()
         {
-
-            var currentUser = _contextHttp.HttpContext.User?.Identity?.Name;
-
 
             var audit = new Audit();
            // audit.TableName = TableName;
@@ -214,6 +209,8 @@ namespace EwidencjaWSK.Data
             audit.KeyValues = JsonConvert.SerializeObject(KeyValues);
             audit.OldValues = OldValues.Count == 0 ? null : JsonConvert.SerializeObject(OldValues);
             audit.NewValues = NewValues.Count == 0 ? null : JsonConvert.SerializeObject(NewValues);
+
+            var currentUser = _contextHttp.HttpContext.User?.Identity?.Name;
             audit.ChangedBy = currentUser.ToString();
 
             return audit;
