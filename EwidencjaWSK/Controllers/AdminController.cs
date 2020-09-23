@@ -118,7 +118,7 @@ namespace EwidencjaWSK.Controllers
                     string whatChanged = ChangesComparisonService.Changes(item.OldValues, item.NewValues);
 
                     id++;
-                    changes.Add(new AuditViewModel { Id = id, Changes = whatChanged, Date = item.DateTime, BeforeChanges = item.OldValues, AfterChanges = item.NewValues, Table = item.TableName, ChangedBy = item.ChangedBy });
+                    changes.Add(new AuditViewModel { Id = id, Changes = whatChanged, Date = item.DateTime, Table = item.TableName, ChangedBy = item.ChangedBy });
                 }
                 
             }

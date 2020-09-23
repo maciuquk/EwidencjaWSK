@@ -200,7 +200,10 @@ namespace EwidencjaWSK.Controllers
             {
                 try
                 {
-                    _context.Update(record);
+                    var recordObj = _context.Records.SingleOrDefault(_ => _.RecordId == id);
+                    Reflection.CopyProperties(record, recordObj);
+                    _context.Update(recordObj);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

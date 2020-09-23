@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EwidencjaWSK.Services
@@ -28,14 +29,10 @@ namespace EwidencjaWSK.Services
             var diffValues = new JsonDiffPatch();
             JToken diffResult = diffValues.Diff(oldValues, newValues);
 
-            var serializeDiff = JsonConvert.SerializeObject(diffResult);
+            var serializeDiffBefore = (JsonConvert.SerializeObject(diffResult)).ToString();
+            string serializeDiff = Regex.Replace(serializeDiffBefore, @"\\r\\n?|\n", "");
 
-            if (serializeDiff == null)
-            {
-                return "brak zmian";
-            }
-
-            return serializeDiff.ToString();
+            return serializeDiff;
         }
     }
 }

@@ -16,12 +16,6 @@ namespace EwidencjaWSK.ViewModel
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [Display(Name ="Przed")]
-        public string BeforeChanges { get; set; }
-        
-        [Display(Name ="Po")]
-        public string AfterChanges { get; set; }
-
         [Display(Name = "Zmiana")]
         public string Changes { get; set; }
 

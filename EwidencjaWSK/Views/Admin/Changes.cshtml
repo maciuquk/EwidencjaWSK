@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<EwidencjaWSK.Models.Audit>*@
-@model IEnumerable<EwidencjaWSK.ViewModel.AuditViewModel>;
+﻿@model IEnumerable<EwidencjaWSK.ViewModel.AuditViewModel>;
 
 @{
     ViewData["Title"] = "Changes";
@@ -25,12 +24,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Changes)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BeforeChanges)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AfterChanges)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -51,12 +44,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Changes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeforeChanges)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AfterChanges)
             </td>
         </tr>
 }

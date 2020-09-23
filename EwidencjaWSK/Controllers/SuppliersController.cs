@@ -117,7 +117,10 @@ namespace EwidencjaWSK.Controllers
             {
                 try
                 {
-                    _context.Update(supplier);
+                    var supplierObj = _context.Suppliers.SingleOrDefault(_ => _.SupplierId== id);
+                    Reflection.CopyProperties(supplier, supplierObj);
+                    _context.Update(supplierObj);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

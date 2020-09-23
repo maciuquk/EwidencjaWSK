@@ -18,7 +18,8 @@ using Newtonsoft.Json;
 namespace EwidencjaWSK.Data
 {
 
-    public class ApplicationDbContext : IdentityDbContext { 
+    public class ApplicationDbContext : IdentityDbContext
+    {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor contextHttp)
             : base(options)
@@ -172,7 +173,7 @@ namespace EwidencjaWSK.Data
         {
 
             var audit = new Audit();
-           // audit.TableName = TableName;
+            // audit.TableName = TableName;
 
             switch (TableName)
             {

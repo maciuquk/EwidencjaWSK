@@ -120,8 +120,10 @@ namespace EwidencjaWSK.Controllers
             {
                 try
                 {
-                    _context.Update(part);
-                   
+                    var partObj = _context.Parts.SingleOrDefault(_ => _.PartId== id);
+                    Reflection.CopyProperties(part, partObj);
+                    _context.Update(partObj);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

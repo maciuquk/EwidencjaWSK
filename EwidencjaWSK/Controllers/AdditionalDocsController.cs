@@ -116,7 +116,10 @@ namespace EwidencjaWSK.Controllers
             {
                 try
                 {
-                    _context.Update(additionalDoc);
+                    var additionalDocObj = _context.AdditionalDocs.SingleOrDefault(_ => _.AdditionalDocId== id);
+                    Reflection.CopyProperties(additionalDoc, additionalDocObj);
+                    _context.Update(additionalDocObj);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
