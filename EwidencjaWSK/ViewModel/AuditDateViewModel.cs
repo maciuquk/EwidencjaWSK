@@ -23,5 +23,8 @@ namespace EwidencjaWSK.ViewModel
 
         [Display(Name ="Wszyscy użytkownicy")]
         public bool AllUsers { get; set; }
+
+        [Display(Name ="Eksport do pliku")]
+        public bool ExportToFile { get; set; }
     }
 }

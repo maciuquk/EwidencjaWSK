@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 using EwidencjaWSK.Data;
 using EwidencjaWSK.Models;
 using EwidencjaWSK.Services;
@@ -123,7 +125,47 @@ namespace EwidencjaWSK.Controllers
                 
             }
 
-            return View(changes);
+            if (auditDates.ExportToFile == false)
+                return View(changes);
+            else
+            {
+                #region excel
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("Raport zmian");
+                    var currentRow = 1;
+                    worksheet.Cell(currentRow, 1).Value = "Lp";
+                    worksheet.Cell(currentRow, 2).Value = "Data";
+                    worksheet.Cell(currentRow, 3).Value = "Tabela";
+                    worksheet.Cell(currentRow, 4).Value = "Użytkownik";
+                    worksheet.Cell(currentRow, 5).Value = "Co zmienione";
+
+                    foreach (var change in changes)
+                    {
+                        currentRow++;
+
+                        worksheet.Cell(currentRow, 1).Value = currentRow - 1;
+                        worksheet.Cell(currentRow, 2).Value = change.Date;
+                        worksheet.Cell(currentRow, 3).Value = change.Table;
+                        worksheet.Cell(currentRow, 4).Value = change.ChangedBy;
+                        worksheet.Cell(currentRow, 5).Value = change.Changes;
+                    }
+
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+
+                        return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            "Raport.xlsx");
+                    }
+                }
+
+                #endregion
+
+                return RedirectToAction("Audit");
+            }
         }
 
         public async Task<IActionResult> Users()
