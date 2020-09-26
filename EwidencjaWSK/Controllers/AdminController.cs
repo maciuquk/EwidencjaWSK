@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using EwidencjaWSK.Data;
@@ -11,6 +12,7 @@ using EwidencjaWSK.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 
 namespace EwidencjaWSK.Controllers
@@ -31,54 +33,6 @@ namespace EwidencjaWSK.Controllers
         public IActionResult Index()
         {
             return View();
-        }
-
-        public IActionResult ZasiejBaze()
-        {
-            for (int i = 1; i < 100; i++)
-            {
-                var newRecord = new Record();
-                var newPart = new Part();
-                var newAdditionalDoc = new AdditionalDoc();
-                var newSupplier = new Supplier();
-
-                var rnd = new Random();
-                newSupplier.Name = "Nowy" + rnd.Next(1000).ToString();
-                newSupplier.PostalCode = "11-111";
-                newSupplier.Street = "Ulica";
-                newSupplier.Number = "1";
-                newSupplier.Country = "Niemcy";
-                newSupplier.Name = "Dostawca" + rnd.Next(1000).ToString();
-                _context.Suppliers.Add(newSupplier);
-                _context.SaveChanges();
-
-                newRecord.Number = "Kontrakt nr. " + rnd.Next(1000).ToString();
-                newRecord.Date = new DateTime(2020,2,4);
-                newRecord.Value = "1000";
-                newRecord.SuplierId = 4;
-                _context.Records.Add(newRecord);
-                _context.SaveChanges();
-
-                newAdditionalDoc.Number = "Dokument nr" + rnd.Next(1000).ToString();
-                newAdditionalDoc.KindOfDoc = "WZ";
-                _context.AdditionalDocs.Add(newAdditionalDoc);
-                _context.SaveChanges();
-
-                newPart.Name = "Część" + rnd.Next(1000).ToString();
-                _context.Parts.Add(newPart);
-                _context.SaveChanges();
-
-
-
-            }
-
-
-            return RedirectToAction("Index", "Records");
-        }
-
-        public IActionResult WyczyscBaze()
-        {
-            return null;
         }
 
         public IActionResult Audit()
@@ -206,6 +160,56 @@ namespace EwidencjaWSK.Controllers
             await _userManager.DeleteAsync(user);
 
             return RedirectToAction("Users");
+        }
+
+        public async Task<IActionResult> UserConfirm()
+        {
+            List<IdentityUser> users = _userManager.Users.ToList();
+            List<UserRoleViewModel> allUsers = new List<UserRoleViewModel>();
+            return View(users);
+
+        }
+
+       [HttpPost]
+        public async Task<IActionResult> UserAccept(string email)
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+
+                    foreach (var user in _context.Users)
+                {
+                    if (user.Email == email)
+                    {
+                        user.EmailConfirmed = true;
+                        
+                    }
+                }
+                    }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("UserConfirm");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserBlocked(string email)
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+                foreach (var user in _context.Users)
+                {
+                    if (user.Email == email)
+                    {
+                        user.EmailConfirmed = false;
+                        
+                    }
+                }
+
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("UserConfirm");
         }
     }
 

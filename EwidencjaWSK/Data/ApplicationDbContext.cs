@@ -212,7 +212,12 @@ namespace EwidencjaWSK.Data
             audit.NewValues = NewValues.Count == 0 ? null : JsonConvert.SerializeObject(NewValues);
 
             var currentUser = _contextHttp.HttpContext.User?.Identity?.Name;
-            audit.ChangedBy = currentUser.ToString();
+
+            if (currentUser != null)
+            {
+                audit.ChangedBy = currentUser.ToString();
+            }
+            
 
             return audit;
         }
