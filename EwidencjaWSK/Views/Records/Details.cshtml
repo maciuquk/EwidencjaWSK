@@ -1,0 +1,251 @@
+﻿@*@model EwidencjaWSK.Models.Record*@
+@model EwidencjaWSK.ViewModel.RecordViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Szczegóły kontraktu</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Number)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.Number)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Value)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.Value)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.Currency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.KindOfTransaction)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.KindOfTransaction)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.IsCheckDenyList)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.IsCheckDenyList)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.IsCheckWarningSignalList)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.IsCheckWarningSignalList)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.IsInPartsBase)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.IsInPartsBase)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.IsNecessaryMinistryPermit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Record.IsNecessaryMinistryPermit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Supplier)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Record.Supplier.SupplierId)*@
+            @{
+                var supplierName = (from supplier in Model.Suppliers
+                                    where supplier.SupplierId == Model.Record.SuplierId
+                                    select supplier.Name).First().ToString();
+                @Html.Raw(supplierName);
+            }
+        </dd>
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.AdditionalDocs)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Record.Supplier.SupplierId)*@
+
+
+            @if (Model.AdditionalDocs.Any())
+            {
+                <table border="1" style="margin-bottom: 5px">
+                    <thead>
+                        <tr>
+                            <th>Lp</th>
+                            <th>Nr dokumentu</th>
+                            <th>Nazwa dokumentu</th>
+                            <th>Data</th>
+
+                        </tr>
+                    </thead>
+
+                    @{
+                        int no = 1;
+                        foreach (var item in Model.AdditionalDocs)
+                        {
+
+
+                                        <tr>
+                                            <td>@Html.Raw(no.ToString())</td>
+                                            <td>@Html.Raw(item.Number)</td>
+                                            <td>@Html.Raw(item.KindOfDoc)</td>
+                                            <td>@Html.Raw(item.Date.Day + "." + item.Date.Month + "." + item.Date.Year)</td>
+                                            <td>
+                                                <form asp-controller="RecordAdditionalDocs" asp-action="Delete" method="post">
+                                                    <input type="hidden" asp-for=@Model.Record.RecordId name="RecordId" />
+                                                    <input type="hidden" asp-for=@item.AdditionalDocId name="AdditionalDocId" />
+                                                    @*<input class="btn btn-outline-primary" type="submit" value="Usuń" />*@
+
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#DocsModal">
+                                                        Usuń
+                                                    </button>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="DocsModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Potwierdzenie</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Czy napewno chcesz usunąć pozycję?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
+                                                                    <button type="submit" class="btn btn-primary">Tak, usuń</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                            </td>
+                                        </tr>
+
+                            no++;
+                        }
+
+                    }
+                </table>
+            }
+            <a class="btn btn-secondary btn-sm" asp-area="" asp-controller="RecordAdditionalDocs" asp-action="Create" asp-route-id=@Model.Record.RecordId >Dodaj dokument z bazy</a>
+
+        </dd>
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Record.Parts)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Record.Supplier.SupplierId)*@
+
+
+            @if (Model.Parts.Any())
+            {
+                <table border="1" style="margin-bottom: 5px">
+                    <thead>
+                        <tr>
+                            <th>Lp</th>
+                            <th>Nazwa</th>
+                            <th>Czy jest na liście uzbrojenia</th>
+
+                        </tr>
+                    </thead>
+
+                    @{
+                        int no = 1;
+                        foreach (var item in Model.Parts)
+                        {
+
+
+                                        <tr>
+                                            <td>@Html.Raw(no.ToString())</td>
+                                            <td>@Html.Raw(item.Name)</td>
+                                            <td>
+                                                @{
+                                                    if (item.IsInArmedList)
+                                                    {
+                                                        @Html.Raw("Tak");
+                                                    }
+                                                    else
+                                                        @Html.Raw("Nie");
+                                                }
+
+                                            </td>
+                                            @*<td><a class="btn btn-outline-primary btn-sm" >Usuń</a></td>*@
+                                            <td>
+                                                <form asp-controller="RecordParts" asp-action="Delete" method="post">
+                                                    <input type="hidden" asp-for=@Model.Record.RecordId name="RecordId" />
+                                                    <input type="hidden" asp-for=@item.PartId name="PartId" />
+                                                    @*<input class="btn btn-outline-primary" type="submit" value="Usuń" />*@
+
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PartsModal">
+                                                        Usuń
+                                                    </button>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="PartsModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Potwierdzenie</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Czy napewno chcesz usunąć pozycję?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
+                                                                    <button type="submit" class="btn btn-primary">Tak, usuń</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                            </td>
+                                        </tr>
+
+                            no++;
+                        }
+
+                    }
+                </table>
+            }
+        <a class="btn btn-secondary btn-sm" asp-area="" asp-controller="RecordParts" asp-action="Create" asp-route-id="@Model.Record.RecordId">Dodaj część z bazy</a>
+
+        </dd>
+    </dl>
+
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Record.RecordId">Edycja</a> |
+    <a asp-action="Index">Wszystkie kontrakty</a>
+</div>

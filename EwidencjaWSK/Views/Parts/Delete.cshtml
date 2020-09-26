@@ -1,0 +1,32 @@
+﻿@model EwidencjaWSK.Models.Part
+
+@{
+    ViewData["Title"] = "Usuwanie";
+}
+
+<h1>Usuwanie</h1>
+
+<h3>Napewno chcesz usunąć tą część?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsInArmedList)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsInArmedList)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PartId" />
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index">Powrót do wszystkich części</a>
+    </form>
+</div>

@@ -1,0 +1,129 @@
+﻿@model EwidencjaWSK.ViewModel.SupplierViewModel
+
+@{
+    ViewData["Title"] = "Wszyscy dostawcy";
+}
+
+<h1>Wszyscy dostawcy</h1>
+
+<p>
+    <a asp-action="Create">Dodaj nowego dostawcę</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.FirstOrDefault().PostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.FirstOrDefault().Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.FirstOrDefault().Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.FirstOrDefault().Country)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Suppliers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SupplierId">Edycja</a> |
+                    <a asp-action="Details" asp-route-id="@item.SupplierId">Szczegóły</a> |
+                    <a asp-action="Delete" asp-route-id="@item.SupplierId">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<nav aria-label="..">
+    <ul class="pagination">
+        <li class="page-item disabled">
+
+            @if (Model.PaginationViewModel.CurrentPage > 1)
+
+            {
+            <li class="page-item">
+                <a class="page-link" asp-route-page=@(Model.PaginationViewModel.CurrentPage - 1) aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+
+            </li>
+        }
+
+
+            @for (int i = 1; i <= Model.PaginationViewModel.TotalPages; i++)
+            {
+                if (i == Model.PaginationViewModel.CurrentPage)
+                {
+
+                    <li class="page-item active"><a class="page-link">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" asp-route-page=@i>@i</a></li>
+                }
+            }
+
+
+            @if (Model.PaginationViewModel.CurrentPage < Model.PaginationViewModel.TotalPages)
+            {
+                <li class="page-item">
+
+                    <a class="page-link" asp-route-page=@(Model.PaginationViewModel.CurrentPage + 1) aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            }
+
+            else
+            {
+                <li class="page-item disabled">
+
+                    <a class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+
+            }
+
+        </ul>
+    </nav>
+

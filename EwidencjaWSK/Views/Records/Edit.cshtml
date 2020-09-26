@@ -1,0 +1,84 @@
+﻿@*@model EwidencjaWSK.Models.Record*@
+@model EwidencjaWSK.ViewModel.RecordViewModel
+
+@{
+    ViewData["Title"] = "Edycja kontraktu";
+}
+
+<h1>Edycja kontraktu</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Record.RecordId" />
+            <div class="form-group">
+                <label asp-for="Record.Number" class="control-label"></label>
+                <input asp-for="Record.Number" class="form-control" />
+                <span asp-validation-for="Record.Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Record.Date" class="control-label"></label>
+                <input asp-for="Record.Date" class="form-control" />
+                <span asp-validation-for="Record.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Record.Value" class="control-label"></label>
+                <input asp-for="Record.Value" class="form-control" />
+                <span asp-validation-for="Record.Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Record.Currency" class="control-label"></label>
+                <input asp-for="Record.Currency" class="form-control" />
+                <span asp-validation-for="Record.Currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Record.Description" class="control-label"></label>
+                <input asp-for="Record.Description" class="form-control" />
+                <span asp-validation-for="Record.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Record.KindOfTransaction" class="control-label"></label>
+                <input asp-for="Record.KindOfTransaction" class="form-control" />
+                <span asp-validation-for="Record.KindOfTransaction" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Record.IsCheckDenyList" /> @Html.DisplayNameFor(model => model.Record.IsCheckDenyList)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Record.IsCheckWarningSignalList" /> @Html.DisplayNameFor(model => model.Record.IsCheckWarningSignalList)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Record.IsInPartsBase" /> @Html.DisplayNameFor(model => model.Record.IsInPartsBase)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Record.IsNecessaryMinistryPermit" /> @Html.DisplayNameFor(model => model.Record.IsNecessaryMinistryPermit)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Record.SuplierId" class="control-label"></label>
+                <select asp-for="Record.SuplierId" class="form-control" asp-items="ViewBag.SuplierId"></select>
+                <span asp-validation-for="Record.SuplierId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Lista kontraktów</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

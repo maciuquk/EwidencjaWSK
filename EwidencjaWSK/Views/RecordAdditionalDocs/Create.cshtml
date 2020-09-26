@@ -1,0 +1,53 @@
+﻿@*@model EwidencjaWSK.Models.RecordAdditionalDoc*@
+
+@model EwidencjaWSK.ViewModel.RecordAdditionalDocViewModel
+
+@{
+    ViewData["Title"] = "Dodawanie dokumentów do kontraktu";
+}
+
+<h1>Dodaj dokumenty do kontraktu nr @Model.Record.Number</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @*<form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RecordId" class="control-label"></label>
+                <select asp-for="RecordId" class ="form-control" asp-items="ViewBag.RecordId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalDocId" class="control-label"></label>
+                <select asp-for="AdditionalDocId" class ="form-control" asp-items="ViewBag.AdditionalDocId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>*@
+
+
+        <form asp-action="Create" asp-method="post">
+
+            <input type="hidden" name="RecordId" value=@Model.Record.RecordId />
+            <label></label>
+            @*<input name="PartId" value="4" />*@
+            <div class="form-group">
+                <select name="AdditionalDocId" class="form-control" asp-items="@(new SelectList(Model.AdditionalDocs,"AdditionalDocId","Number"))"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Records" asp-action="Details" asp-route-id=@Model.Record.RecordId >Powrót do kontraktu</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EwidencjaWSK.Models;
+using EwidencjaWSK.Data;
 
 namespace EwidencjaWSK.Controllers
 {
@@ -13,9 +14,12 @@ namespace EwidencjaWSK.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private ApplicationDbContext _context;
+        
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -25,7 +29,10 @@ namespace EwidencjaWSK.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            List<Record> Rekordy = new List<Record>();
+            Rekordy = _context.Records.ToList();
+
+            return View(Rekordy);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

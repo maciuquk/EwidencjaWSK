@@ -1,0 +1,52 @@
+﻿@*@model IEnumerable<EwidencjaWSK.Models.Part>*@
+@using Microsoft.AspNetCore.Identity
+@using EwidencjaWSK.ViewModel
+@inject SignInManager<IdentityUser> signInManager;
+
+@model IEnumerable<IdentityUser>
+
+@{
+    ViewData["Title"] = "UserConfirm";
+}
+
+<h1>Akceptacja nowego użytkownika</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Raw("Użytkownik")
+            </th>
+            <th>
+                @Html.Raw("Akceptacja")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @if (item.EmailConfirmed == false)
+                    {
+
+                    <form asp-action="UserAccept" method="post" asp-route-email=@item.Email >
+                       <input type="submit" class="btn btn-primary" value="Akceptuj">
+                    </form>
+                    }
+                    else
+                    {
+                    <form asp-action="UserBlocked" method="post" asp-route-email=@item.Email>
+                        <input type="submit" class="btn btn-danger" value="Blokuj">
+                    </form>                    
+                     }
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>
